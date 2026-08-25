@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Minimal Clean UI & Auto-scrolling fix
+# Custom CSS for Clean UI & Auto-scrolling fix
 st.markdown("""
     <style>
     .title-container {
@@ -46,6 +46,14 @@ st.markdown("""
         border: 1px solid #374151;
         border-radius: 12px;
     }
+    .suggestion-box {
+        background-color: #1F2937;
+        padding: 12px 18px;
+        border-radius: 8px;
+        border-left: 4px solid #06B6D4;
+        margin-bottom: 15px;
+        color: #E5E7EB;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -53,170 +61,287 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 3. Precise PCM Router & Content Engine (Strict Keyword Matching)
+# 3. Precise PCM Router & Content Engine with Suggested Questions
 def get_pcm_response(query):
     text = query.lower()
     
-    # --- A. PHYSICS: SOLENOID ---
-    if "solenoid" in text or "magnetic field due to current" in text:
+    # --- PHYSICS 1: Electrostatics ---
+    if any(k in text for k in ["electrostatics", "charges", "electric field", "charge"]):
         return """
-### ⚡ Magnetic Effects of Current & Solenoid
+### ⚡ Electrostatics — Charges & Electric Field
 
-**Key Theory Highlights:**
-* **Solenoid:** A tightly wound helical coil of insulated copper wire.
-* **Magnetic Field inside:** Uniform and parallel along the axis ($B = \\mu_0 n I$).
-* **Outside Field:** Nearly zero for an ideal long solenoid.
-
----
-### 🔬 Interactive Magnetic Field Simulator
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "Explain electric field lines between two positive charges."<br>
+• "How does distance affect the electrostatic force between charges?"
 </div>
 
+**Key Theory Highlights:**
+* **Coulomb's Law:** $F = \\frac{1}{4\\pi\\varepsilon_0} \\frac{q_1 q_2}{r^2}$.
+* Electric field lines originate from positive charges and terminate on negative charges.
+
 ---
-**💡 How to Use This Simulation (Beginner Guide):**
-1. **Magnet Move Karein:** Bar magnet ko drag karke coil ke andar-baahar move karein.
-2. **Observe Bulb:** Observe karein ki jab magnet move hota hai tabhi bulb glow karta hai.
+### 🔬 Interactive Field & Charge Visualizer
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/electric-field-hockey/latest/electric-field-hockey_en.html"></iframe>
+</div>
 """
 
-    # --- B. PHYSICS: EMI / FARADAY / LENZ ---
-    elif any(k in text for k in ["induction", "faraday", "lenz", "emi"]):
+    # --- PHYSICS 2: Electric Circuits ---
+    elif any(k in text for k in ["circuit", "ohm", "resistance", "current"]):
         return """
-### 🧲 Electromagnetic Induction (EMI)
+### 🔌 Electric Circuits — Current, Resistance, Ohm’s Law
 
-**Key Theory Highlights:**
-* **Faraday's Law:** Induced EMF is directly proportional to the rate of change of magnetic flux ($\\mathcal{E} = -\\frac{d\\Phi}{dt}$).
-* **Lenz's Law:** Induced current opposes the change in flux that produces it.
-
----
-### 🔬 Interactive EMI Simulator
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What is Ohm's Law and how does resistance affect current?"<br>
+• "How to connect a simple DC circuit with a bulb and battery?"
 </div>
 
----
-**💡 How to Use This Simulation (Beginner Guide):**
-1. Magnet ki speed badha kar dekhein: Fast movement se zyada current generate hota hai.
-2. Magnet ke poles ko flip karke voltmeter ki direction change hote hue dekhein.
-"""
-
-    # --- C. PHYSICS: CIRCUITS / OHM'S LAW ---
-    elif any(k in text for k in ["circuit", "ohm", "resistance", "current electricity", "kirchhoff", "physics exam"]):
-        return """
-### 🔌 Current Electricity & Circuits
-
 **Key Theory Highlights:**
-* **Ohm's Law:** $V = IR$ (at constant temperature).
-* **Kirchhoff's Voltage Law (KVL):** $\\sum V = 0$ in a closed loop.
-* **Kirchhoff's Current Law (KCL):** $\\sum I_{in} = \\sum I_{out}$ at any junction.
+* **Ohm's Law:** $V = IR$.
+* Equivalent resistance in series ($R = R_1 + R_2$) and parallel ($\\frac{1}{R} = \\frac{1}{R_1} + \\frac{1}{R_2}$).
 
 ---
 ### 🔬 Interactive Circuit Construction Kit
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
 </div>
-
----
-**💡 How to Use This Simulation (Beginner Guide):**
-1. **Components Drag Karein:** Wire, Battery, aur Resistor/Bulb ko screen par laayein.
-2. **Circuit Close Karein:** Wires ko connect karke complete loop banayein.
 """
 
-    # --- D. PHYSICS: WAVE OPTICS ---
-    elif any(k in text for k in ["wave optics", "interference", "diffraction", "huygen", "young"]):
+    # --- PHYSICS 3: Magnetism ---
+    elif any(k in text for k in ["magnet", "solenoid", "electromagnet", "magnetic field"]):
         return """
-### 🌊 Wave Optics & Wave Interference
+### 🧲 Magnetism — Magnetic Field & Electromagnets
 
-**Key Theory Highlights:**
-* **Huygens' Principle:** Every point on a wavefront acts as a secondary source of spherical wavelets.
-* **Young's Double Slit (YDSE):** Fringe width $\\beta = \\frac{\\lambda D}{d}$.
-
----
-### 🔬 Interactive Wave Interference Simulator
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_en.html?screens=1"></iframe>
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What is the magnetic field pattern inside a current-carrying solenoid?"<br>
+• "How does changing current strength affect an electromagnet?"
 </div>
 
+**Key Theory Highlights:**
+* Solenoid magnetic field: $B = \\mu_0 n I$.
+* Magnetic field lines form continuous closed loops from North to South outside, and South to North inside.
+
 ---
-**💡 How to Use This Simulation (Beginner Guide):**
-1. Screen par "Slits" option select karein.
-2. Light generator ON karein aur Slit width adjust karein.
+### 🔬 Interactive Magnetic Field Lab
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+</div>
 """
 
-    # --- E. CHEMISTRY: VSEPR & BONDING ---
-    elif any(k in text for k in ["vsepr", "molecule shape", "molecular geometry", "chemical bonding"]):
+    # --- PHYSICS 4: Electromagnetic Induction ---
+    elif any(k in text for k in ["induction", "faraday", "generator", "emi", "lenz"]):
         return """
-### 💎 Molecular Geometry & VSEPR Theory
+### ⚡ Electromagnetic Induction — Faraday’s Law, Generator
 
-**Key Theory Highlights:**
-* Electron pairs around a central atom repel each other and adjust in 3D space to minimize repulsion.
-* **Linear:** $180^\\circ$ | **Tetrahedral:** $109.5^\\circ$ | **Trigonal Planar:** $120^\\circ$
-
----
-### 🔬 Interactive 3D Molecule Visualizer
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_en.html?screens=1"></iframe>
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "State Faraday's Law of Electromagnetic Induction."<br>
+• "How does a bar magnet moving through a coil produce electric current?"
 </div>
 
+**Key Theory Highlights:**
+* **Faraday's Law:** Induced EMF $\\mathcal{E} = -\\frac{d\\Phi}{dt}$.
+* **Lenz's Law:** Direction of induced current always opposes the change producing it.
+
 ---
-**💡 How to Use This Simulation (Beginner Guide):**
-1. Screen par **Real Molecules** select karein.
-2. Central atom ke surrounding bonded atoms aur lone pairs add/remove karein.
+### 🔬 Interactive Induction Generator
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+</div>
 """
 
-    # --- F. CHEMISTRY: PH SCALE ---
-    elif any(k in text for k in ["ph", "acid", "base", "solution", "electrochemistry"]):
+    # --- PHYSICS 5: Ray Optics ---
+    elif any(k in text for k in ["optics", "lens", "mirror", "refraction", "reflection"]):
         return """
-### 🧪 Acids, Bases & pH Scale
+### 👓 Ray Optics — Lenses & Mirrors
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What is the lens maker's formula?"<br>
+• "How do convex and concave lenses form images?"
+</div>
 
 **Key Theory Highlights:**
-* **pH Definition:** $\\text{pH} = -\\log[H^+]$.
+* Mirror/Lens formula: $\\frac{1}{f} = \\frac{1}{v} \\pm \\frac{1}{u}$.
+* Snell's Law: $n_1 \\sin i = n_2 \\sin r$.
+
+---
+### 🔬 Interactive Bending Light & Optics Lab
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"></iframe>
+</div>
+"""
+
+    # --- CHEMISTRY 1: Electrochemistry ---
+    elif any(k in text for k in ["electrochemistry", "galvanic", "cell", "electrode potential"]):
+        return """
+### 🔋 Electrochemistry — Galvanic Cells, Voltage
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "Explain the working of a Daniell Cell (Galvanic Cell)."<br>
+• "What is Nernst Equation for electrode potential?"
+</div>
+
+**Key Theory Highlights:**
+* Oxidation occurs at Anode (negative electrode), Reduction occurs at Cathode (positive electrode).
+* Cell potential: $E_{cell} = E_{cathode} - E_{anode}$.
+
+---
+### 🔬 Interactive Electrochemical Cell Lab
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/battery-voltage/latest/battery-voltage_en.html"></iframe>
+</div>
+"""
+
+    # --- CHEMISTRY 2: Chemical Kinetics ---
+    elif any(k in text for k in ["kinetics", "reaction rate", "concentration", "order of reaction"]):
+        return """
+### ⏱️ Chemical Kinetics — Reaction Rate & Concentration
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What factors affect the rate of a chemical reaction?"<br>
+• "What is the difference between molecularity and order of a reaction?"
+</div>
+
+**Key Theory Highlights:**
+* Rate Law: Rate = $k[A]^x[B]^y$.
+* Arrhenius Equation: $k = A e^{-E_a / RT}$.
+
+---
+### 🔬 Interactive Reaction Kinetics Lab
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/reactants-products-and-leftovers/latest/reactants-products-and-leftovers_en.html"></iframe>
+</div>
+"""
+
+    # --- CHEMISTRY 3: Solutions ---
+    elif any(k in text for k in ["solution", "molarity", "dilution", "colligative"]):
+        return """
+### 🧪 Solutions — Concentration, Molarity, Dilution
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What is the formula for calculating Molarity and Molality?"<br>
+• "How does adding solute change solution concentration?"
+</div>
+
+**Key Theory Highlights:**
+* **Molarity ($M$):** Moles of solute per liter of solution.
+* **Raoult's Law:** Partial vapor pressure of each volatile component is directly proportional to its mole fraction.
+
+---
+### 🔬 Interactive Solution Concentration Lab
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"></iframe>
+</div>
+"""
+
+    # --- CHEMISTRY 4: Acids & Bases ---
+    elif any(k in text for k in ["ph", "acid", "base", "indicator"]):
+        return """
+### ⚗️ Acids & Bases — pH and Indicators
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "How to calculate the pH of a strong acid or base solution?"<br>
+• "What are acid-base indicators?"
+</div>
+
+**Key Theory Highlights:**
+* $\\text{pH} = -\\log[H^+]$.
 * Neutral: $\\text{pH} = 7$, Acidic: $\\text{pH} < 7$, Basic: $\\text{pH} > 7$.
 
 ---
-### 🔬 Interactive pH Scale Simulator
+### 🔬 Interactive pH Scale Lab
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html?screens=1"></iframe>
 </div>
-
----
-**💡 How to Use This Simulation (Beginner Guide):**
-1. Dropper se liquid container mein dalein.
-2. Green pH sensor ko liquid mein dip karke exact pH level check karein.
 """
 
-    # --- G. MATHEMATICS: 3D GEOMETRY ---
-    elif any(k in text for k in ["3d", "vector", "plane", "line", "skew", "geometry", "math"]):
+    # --- CHEMISTRY 5: Surface Chemistry ---
+    elif any(k in text for k in ["surface chemistry", "adsorption", "colloid", "catalysis"]):
         return """
-### 📐 3D Geometry & Vectors (Class 12)
+### 🧽 Surface Chemistry — Adsorption/Colloids
 
-**Key Theory Highlights:**
-* **Vector Product:** $\\vec{A} \\times \\vec{B} = |A||B|\\sin\\theta\\,\\hat{n}$.
-* **Shortest Distance (Skew Lines):** $d = \\left| \\frac{(\\vec{b}_1 \\times \\vec{b}_2) \\cdot (\\vec{a}_2 - \\vec{a}_1)}{|\\vec{b}_1 \\times \\vec{b}_2|} \\right|$.
-
----
-### 🔬 Interactive 3D Math Canvas (GeoGebra 3D)
-<div class="sim-container">
-    <iframe src="https://www.geogebra.org/3d?embed"></iframe>
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What is the difference between physisorption and chemisorption?"<br>
+• "What are lyophilic and lyophobic colloids?"
 </div>
 
+**Key Theory Highlights:**
+* Freundlich Adsorption Isotherm: $\\frac{x}{m} = k P^{1/n}$ (at constant temperature).
+* Tyndall effect is exhibited by colloidal solutions.
+
 ---
-**💡 How to Use This Canvas (Beginner Guide):**
-* **Cube Render:** Left side **Algebra ($\\alpha$)** tab mein `Cube((0,0,0), (2,0,0))` type karein.
-* **Vector Render:** Algebra tab mein `Vector((2,3,4))` type karein.
+### 🔬 Interactive States of Matter & Surface Interaction
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
+</div>
 """
 
-    # --- H. FALLBACK / GENERAL QUERY RESPONSE ---
+    # --- MATHS 1: Application of Derivatives ---
+    elif any(k in text for k in ["derivative", "application of derivatives", "tangent", "maxima", "minima"]):
+        return """
+### 📈 Application of Derivatives (Class 12 Math)
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "How to find the equation of tangent and normal to a curve?"<br>
+• "What is the test for local maxima and local minima?"
+</div>
+
+**Key Theory Highlights:**
+* Rate of change: $\\frac{dy}{dx}$ represents rate of change of $y$ with respect to $x$.
+* Increasing function: $\\frac{dy}{dx} > 0$ | Decreasing function: $\\frac{dy}{dx} < 0$.
+
+---
+### 🔬 Interactive Function Visualizer
+<div class="sim-container">
+    <iframe src="https://www.geogebra.org/calculator?embed"></iframe>
+</div>
+"""
+
+    # --- MATHS 2: Probability ---
+    elif any(k in text for k in ["probability", "bayes", "conditional probability", "random variable"]):
+        return """
+### 🎲 Probability (Class 12 Math)
+
+<div class="suggestion-box">
+<strong>💡 Aap aise questions puch sakte hain:</strong><br>
+• "What is conditional probability formula?"<br>
+• "Explain Bayes' Theorem with an example."
+</div>
+
+**Key Theory Highlights:**
+* Conditional Probability: $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$.
+* Multiplication theorem: $P(A \\cap B) = P(A)P(B|A)$.
+
+---
+### 🔬 Interactive Probability Visualizer
+<div class="sim-container">
+    <iframe src="https://www.geogebra.org/calculator?embed"></iframe>
+</div>
+"""
+
+    # --- FALLBACK / GENERAL QUERY ---
     else:
         return f"""
-### 📘 CBSE Class 12 PCM Guide: **{query.title()}**
+### 📘 ChitraVidya AI | Class 12 PCM Guide: **{query.title()}**
 
-**Concept Overview:**
-Aapka yeh query Class 12th PCM syllabus se related hai. Exact interactive simulation aur theory notes dekhne ke liye niche diye keywords mein se koi ek search karein:
+<div class="suggestion-box">
+<strong>💡 Top topics available to explore:</strong><br>
+• <strong>Physics:</strong> Electrostatics, Circuits, Magnetism, EMI, Ray Optics<br>
+• <strong>Chemistry:</strong> Electrochemistry, Kinetics, Solutions, Acids & Bases, Surface Chemistry<br>
+• <strong>Maths:</strong> Application of Derivatives, Probability
+</div>
 
-* **Physics Topics:** *Solenoid, Electromagnetic Induction, Current Electricity, Wave Optics*
-* **Chemistry Topics:** *VSEPR Theory, pH Scale, Chemical Bonding*
-* **Math Topics:** *3D Geometry, Vectors*
+Aap upar diye gaye kisi bhi topic ka naam ya usse related question direct yahan type kar sakte hain!
 """
 
 # 4. App Main Interface Logic (Header / Logo)
@@ -227,7 +352,7 @@ if len(st.session_state.messages) == 0:
             <h1 class="main-title">Ask ChitraVidya AI</h1>
         </div>
     """, unsafe_allow_html=True)
-    st.markdown('<p class="sub-title">for Class 12th</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-title">for Class 12th PCM</p>', unsafe_allow_html=True)
 
 # Display Chat History
 for msg in st.session_state.messages:
