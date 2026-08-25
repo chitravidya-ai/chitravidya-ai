@@ -8,18 +8,30 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Minimal Clean UI (ChatGPT Style Center Title)
+# Custom CSS for Minimal Clean UI (ChatGPT Style Center Title with Logo)
 st.markdown("""
     <style>
+    .title-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 10vh;
+        margin-bottom: 0px;
+    }
+    .logo-img {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
     .main-title {
-        text-align: center;
         font-size: 3rem;
         font-weight: 800;
         background: linear-gradient(45deg, #4F46E5, #06B6D4);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 10vh;
-        margin-bottom: 0px;
+        margin: 0;
     }
     .sub-title {
         text-align: center;
@@ -209,9 +221,14 @@ Class 12th CBSE 2026-27 syllabus ke according **{query.title()}** ek core concep
 * **Mathematics:** *3D Geometry, Vectors*
 """
 
-# 4. App Main Interface Logic
+# 4. App Main Interface Logic (Only show when chat is empty)
 if len(st.session_state.messages) == 0:
-    st.markdown('<h1 class="main-title">Ask ChitraVidya AI</h1>', unsafe_allow_html=True)
+    st.markdown("""
+        <div class="title-container">
+            <img src="https://raw.githubusercontent.com/chitravidya-ai/chitravidya-ai/main/logo.png" class="logo-img">
+            <h1 class="main-title" style="margin:0;">Ask ChitraVidya AI</h1>
+        </div>
+    """, unsafe_allow_html=True)
     st.markdown('<p class="sub-title">for Class 12th</p>', unsafe_allow_html=True)
 
 # Display Chat History
