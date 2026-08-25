@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Clean UI & Displaying Topics on Main Screen
+# Custom CSS for Clean UI & Hiding PhET Control Panels / Branding
 st.markdown("""
     <style>
     .title-container {
@@ -40,11 +40,21 @@ st.markdown("""
         margin-bottom: 2rem;
         font-weight: 500;
     }
+    /* Clean simulation wrapper to hide extra borders/bars */
+    .sim-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid #374151;
+        background: #0f172a;
+    }
     .sim-container iframe {
         width: 100%;
-        height: 500px;
-        border: 1px solid #374151;
-        border-radius: 12px;
+        height: 520px;
+        border: none;
+        /* Scales or shifts iframe slightly if needed to hide top/bottom branding bars */
+        margin-top: -35px; 
+        margin-bottom: -45px;
     }
     .topic-card {
         background-color: #1E293B;
@@ -87,10 +97,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Drag positive or negative charges onto the play area.
 2. Use the sensor to measure electric field strength and direction.
 """
@@ -106,10 +116,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Drag wires, batteries, and resistors into the workspace.
 2. Connect them together to form a closed loop and observe current flow.
 """
@@ -125,10 +135,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1&ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Move the bar magnet in and out of the coil.
 2. Observe how the magnetic flux change produces a current and lights up the bulb.
 """
@@ -144,10 +154,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1&ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Check the magnetic field lines option.
 2. Move the compass around the magnet to check field directions.
 """
@@ -163,10 +173,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2&ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Rotate the loop inside the magnetic field to generate electricity.
 2. Observe AC voltage variations on the oscilloscope screen.
 """
@@ -182,10 +192,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Place an object in front of a convex/concave lens.
 2. Adjust focal length and object distance to see real or virtual images.
 """
@@ -203,10 +213,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Select different metals and place them in salt solutions.
 2. Compare reactivity and observe voltage generated in the cell.
 """
@@ -222,10 +232,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Pump reactant molecules into the chamber.
 2. Adjust temperature and initial amounts to track product formation over time.
 """
@@ -241,10 +251,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Add solute or solvent to change solution concentration.
 2. Use the concentration meter to measure molarity.
 """
@@ -260,10 +270,10 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Use the dropper to add different liquids (coffee, soap, water) to the beaker.
 2. Dip the pH sensor to check exact acidic or basic nature.
 """
@@ -279,14 +289,12 @@ def get_pcm_response(query):
 ---
 ### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
-<div>
-1. Heat or cool atoms/molecules to observe phase changes.<br>
+**Beginner Guide:**
+1. Heat or cool atoms/molecules to observe phase changes.
 2. Analyze surface interactions and particle behavior.
-</div>
 """
 
 
@@ -300,12 +308,12 @@ def get_pcm_response(query):
 * Finding local maxima and minima using first and second derivative tests.
 
 ---
-### 📐 Interactive Canvas (GeoGebra)
+### 📐 Interactive Canvas
 <div class="sim-container">
-    <iframe src="https://www.geogebra.org/graphing?embed"></iframe>
+    <iframe src="https://www.geogebra.org/graphing?embed&showToolbar=false&showMenuBar=false"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Type functions like `f(x) = x^3 - 3x` in the input bar.
 2. Find turning points and slopes directly on the graph.
 """
@@ -319,12 +327,12 @@ def get_pcm_response(query):
 * Bayes' Theorem and Probability Distributions.
 
 ---
-### 📐 Interactive Canvas (GeoGebra)
+### 📐 Interactive Canvas
 <div class="sim-container">
     <iframe src="https://www.geogebra.org/scientific?embed"></iframe>
 </div>
 
-**💡 Beginner Guide (English):**
+**Beginner Guide:**
 1. Use scientific tools for quick statistical calculations and permutations.
 """
 
