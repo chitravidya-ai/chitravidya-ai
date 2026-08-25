@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Minimal Clean UI (ChatGPT Style Center Title with Logo)
+# Custom CSS for Minimal Clean UI & Auto-scrolling fix
 st.markdown("""
     <style>
     .title-container {
@@ -16,7 +16,7 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         gap: 15px;
-        margin-top: 10vh;
+        margin-top: 5vh;
         margin-bottom: 0px;
     }
     .logo-img {
@@ -53,146 +53,146 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 3. Dynamic PCM Router & Content Engine
+# 3. Precise PCM Router & Content Engine (Strict Keyword Matching)
 def get_pcm_response(query):
     text = query.lower()
     
-    # --- A. PHYSICS ---
-    if any(k in text for k in ["solenoid", "magnetic field due to current", "biot savart", "ampere"]):
+    # --- A. PHYSICS: SOLENOID ---
+    if "solenoid" in text or "magnetic field due to current" in text:
         return """
 ### ⚡ Magnetic Effects of Current & Solenoid
 
 **Key Theory Highlights:**
 * **Solenoid:** A tightly wound helical coil of insulated copper wire.
-* **Magnetic Field inside:** Uniform and parallel along the axis ($B = \mu_0 n I$).
+* **Magnetic Field inside:** Uniform and parallel along the axis ($B = \\mu_0 n I$).
 * **Outside Field:** Nearly zero for an ideal long solenoid.
 
 ---
-### 🔬 Interactive Electromagnetic Field Simulator
+### 🔬 Interactive Magnetic Field Simulator
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_all.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
 
 ---
 **💡 How to Use This Simulation (Beginner Guide):**
 1. **Magnet Move Karein:** Bar magnet ko drag karke coil ke andar-baahar move karein.
-2. **Observe Bulb & Voltmeter:** Observe karein ki jab magnet move hota hai tabhi bulb glow karta hai (Induction).
-3. **Lines View:** "Show Magnetic Field Lines" checkbox par click karke magnetic lines dekhein.
+2. **Observe Bulb:** Observe karein ki jab magnet move hota hai tabhi bulb glow karta hai.
 """
 
+    # --- B. PHYSICS: EMI / FARADAY / LENZ ---
     elif any(k in text for k in ["induction", "faraday", "lenz", "emi"]):
         return """
 ### 🧲 Electromagnetic Induction (EMI)
 
 **Key Theory Highlights:**
-* **Faraday's Law:** Induced EMF is directly proportional to the rate of change of magnetic flux ($\mathcal{E} = -\\frac{d\Phi}{dt}$).
-* **Lenz's Law:** Induced current opposes the change in flux that produces it (Conservation of Energy).
+* **Faraday's Law:** Induced EMF is directly proportional to the rate of change of magnetic flux ($\\mathcal{E} = -\\frac{d\\Phi}{dt}$).
+* **Lenz's Law:** Induced current opposes the change in flux that produces it.
 
 ---
 ### 🔬 Interactive EMI Simulator
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_all.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
 
 ---
 **💡 How to Use This Simulation (Beginner Guide):**
 1. Magnet ki speed badha kar dekhein: Fast movement se zyada current generate hota hai.
-2. Magnet ke poles (N/S) ko flip karke voltmeter ki direction change hote hue dekhein.
+2. Magnet ke poles ko flip karke voltmeter ki direction change hote hue dekhein.
 """
 
-    elif any(k in text for k in ["circuit", "ohm", "resistance", "current electricity", "kirchhoff"]):
+    # --- C. PHYSICS: CIRCUITS / OHM'S LAW ---
+    elif any(k in text for k in ["circuit", "ohm", "resistance", "current electricity", "kirchhoff", "physics exam"]):
         return """
-### 🔌 Current Electricity & Circuit Construction
+### 🔌 Current Electricity & Circuits
 
 **Key Theory Highlights:**
 * **Ohm's Law:** $V = IR$ (at constant temperature).
-* **Kirchhoff's Voltage Law (KVL):** $\sum V = 0$ in a closed loop.
-* **Kirchhoff's Current Law (KCL):** $\sum I_{in} = \sum I_{out}$ at any junction.
+* **Kirchhoff's Voltage Law (KVL):** $\\sum V = 0$ in a closed loop.
+* **Kirchhoff's Current Law (KCL):** $\\sum I_{in} = \\sum I_{out}$ at any junction.
 
 ---
 ### 🔬 Interactive Circuit Construction Kit
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_all.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
 </div>
 
 ---
 **💡 How to Use This Simulation (Beginner Guide):**
 1. **Components Drag Karein:** Wire, Battery, aur Resistor/Bulb ko screen par laayein.
 2. **Circuit Close Karein:** Wires ko connect karke complete loop banayein.
-3. **Voltmeter & Ammeter:** Side panel se Voltmeter drag karke $V$ aur $I$ measure karein.
 """
 
+    # --- D. PHYSICS: WAVE OPTICS ---
     elif any(k in text for k in ["wave optics", "interference", "diffraction", "huygen", "young"]):
         return """
 ### 🌊 Wave Optics & Wave Interference
 
 **Key Theory Highlights:**
 * **Huygens' Principle:** Every point on a wavefront acts as a secondary source of spherical wavelets.
-* **Young's Double Slit (YDSE):** Fringe width $\beta = \\frac{\lambda D}{d}$.
+* **Young's Double Slit (YDSE):** Fringe width $\\beta = \\frac{\\lambda D}{d}$.
 
 ---
 ### 🔬 Interactive Wave Interference Simulator
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_all.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_en.html?screens=1"></iframe>
 </div>
 
 ---
 **💡 How to Use This Simulation (Beginner Guide):**
 1. Screen par "Slits" option select karein.
-2. Light generator ON karein aur Slit width adjust karke screen par alternate bright/dark fringes dekhein.
+2. Light generator ON karein aur Slit width adjust karein.
 """
 
-    # --- B. CHEMISTRY ---
+    # --- E. CHEMISTRY: VSEPR & BONDING ---
     elif any(k in text for k in ["vsepr", "molecule shape", "molecular geometry", "chemical bonding"]):
         return """
 ### 💎 Molecular Geometry & VSEPR Theory
 
 **Key Theory Highlights:**
 * Electron pairs around a central atom repel each other and adjust in 3D space to minimize repulsion.
-* **Linear:** $180^\circ$ | **Tetrahedral:** $109.5^\circ$ | **Trigonal Planar:** $120^\circ$
+* **Linear:** $180^\\circ$ | **Tetrahedral:** $109.5^\\circ$ | **Trigonal Planar:** $120^\\circ$
 
 ---
 ### 🔬 Interactive 3D Molecule Visualizer
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_all.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_en.html?screens=1"></iframe>
 </div>
 
 ---
 **💡 How to Use This Simulation (Beginner Guide):**
 1. Screen par **Real Molecules** select karein.
-2. Central atom ke surrounding bonded atoms aur lone pairs add/remove karke 3D shape rotate karein.
-3. **Show Bond Angles** checkmark on karke exact angle observe karein.
+2. Central atom ke surrounding bonded atoms aur lone pairs add/remove karein.
 """
 
+    # --- F. CHEMISTRY: PH SCALE ---
     elif any(k in text for k in ["ph", "acid", "base", "solution", "electrochemistry"]):
         return """
 ### 🧪 Acids, Bases & pH Scale
 
 **Key Theory Highlights:**
-* **pH Definition:** $\text{pH} = -\log[H^+]$.
-* Neutral: $\text{pH} = 7$, Acidic: $\text{pH} < 7$, Basic: $\text{pH} > 7$.
+* **pH Definition:** $\\text{pH} = -\\log[H^+]$.
+* Neutral: $\\text{pH} = 7$, Acidic: $\\text{pH} < 7$, Basic: $\\text{pH} > 7$.
 
 ---
 ### 🔬 Interactive pH Scale Simulator
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_all.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html?screens=1"></iframe>
 </div>
 
 ---
 **💡 How to Use This Simulation (Beginner Guide):**
 1. Dropper se liquid container mein dalein.
 2. Green pH sensor ko liquid mein dip karke exact pH level check karein.
-3. Water add karke dilution effect test karein.
 """
 
-    # --- C. MATHEMATICS ---
+    # --- G. MATHEMATICS: 3D GEOMETRY ---
     elif any(k in text for k in ["3d", "vector", "plane", "line", "skew", "geometry", "math"]):
         return """
 ### 📐 3D Geometry & Vectors (Class 12)
 
 **Key Theory Highlights:**
-* **Vector Product:** $\vec{A} \times \vec{B} = |A||B|\sin\theta\,\hat{n}$.
-* **Shortest Distance (Skew Lines):** $d = \left| \\frac{(\vec{b}_1 \times \vec{b}_2) \cdot (\vec{a}_2 - \vec{a}_1)}{|\vec{b}_1 \times \vec{b}_2|} \right|$.
+* **Vector Product:** $\\vec{A} \\times \\vec{B} = |A||B|\\sin\\theta\\,\\hat{n}$.
+* **Shortest Distance (Skew Lines):** $d = \\left| \\frac{(\\vec{b}_1 \\times \\vec{b}_2) \\cdot (\\vec{a}_2 - \\vec{a}_1)}{|\\vec{b}_1 \\times \\vec{b}_2|} \\right|$.
 
 ---
 ### 🔬 Interactive 3D Math Canvas (GeoGebra 3D)
@@ -202,31 +202,29 @@ def get_pcm_response(query):
 
 ---
 **💡 How to Use This Canvas (Beginner Guide):**
-* **Cube Render:** Left side **Algebra ($\alpha$)** tab mein `Cube((0,0,0), (2,0,0))` type karke Enter dabayein.
+* **Cube Render:** Left side **Algebra ($\\alpha$)** tab mein `Cube((0,0,0), (2,0,0))` type karein.
 * **Vector Render:** Algebra tab mein `Vector((2,3,4))` type karein.
-* **Rotate Canvas:** Mouse click karke Hold & Drag karne par 3D space rotate hoga.
 """
 
-    # --- FALLBACK / GENERAL QUERY RESPONSE ---
+    # --- H. FALLBACK / GENERAL QUERY RESPONSE ---
     else:
         return f"""
-### 📘 CBSE Class 12 PCM Topic: **{query.title()}**
+### 📘 CBSE Class 12 PCM Guide: **{query.title()}**
 
 **Concept Overview:**
-Class 12th CBSE 2026-27 syllabus ke according **{query.title()}** ek core concept hai. Aap isse related specific simulations screen par dekhne ke liye neechay diye gaye keywords me se search kar sakte hain.
+Aapka yeh query Class 12th PCM syllabus se related hai. Exact interactive simulation aur theory notes dekhne ke liye niche diye keywords mein se koi ek search karein:
 
-**Try searching:**
-* **Physics:** *Solenoid, Electromagnetic Induction, Kirchhoff Laws, Wave Optics*
-* **Chemistry:** *VSEPR Theory, Molecule Shapes, pH Scale*
-* **Mathematics:** *3D Geometry, Vectors*
+* **Physics Topics:** *Solenoid, Electromagnetic Induction, Current Electricity, Wave Optics*
+* **Chemistry Topics:** *VSEPR Theory, pH Scale, Chemical Bonding*
+* **Math Topics:** *3D Geometry, Vectors*
 """
 
-# 4. App Main Interface Logic (Only show when chat is empty)
+# 4. App Main Interface Logic (Header / Logo)
 if len(st.session_state.messages) == 0:
     st.markdown("""
         <div class="title-container">
-            <img src="https://raw.githubusercontent.com/chitravidya-ai/chitravidya-ai/main/logo.png" class="logo-img">
-            <h1 class="main-title" style="margin:0;">Ask ChitraVidya AI</h1>
+            <img src="https://img.icons8.com/color/96/sparkling.png" class="logo-img">
+            <h1 class="main-title">Ask ChitraVidya AI</h1>
         </div>
     """, unsafe_allow_html=True)
     st.markdown('<p class="sub-title">for Class 12th</p>', unsafe_allow_html=True)
@@ -236,7 +234,7 @@ for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"], unsafe_allow_html=True)
 
-# 5. Bottom Chat Input
+# 5. Bottom Chat Input & Auto-Scroll Mechanism
 user_input = st.chat_input("Ask ChitraVidya AI...")
 
 if user_input:
@@ -245,5 +243,15 @@ if user_input:
     # Generate structured PCM response
     response = get_pcm_response(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    # Auto-scroll script injection for instant view focus
+    st.markdown(
+        """
+        <script>
+            window.parent.document.querySelector('section.main').scrollTo({top: 100000, behavior: 'smooth'});
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
     
     st.rerun()
