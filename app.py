@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Clean UI & Auto-scrolling fix
+# Custom CSS for Clean UI & Displaying Topics on Main Screen
 st.markdown("""
     <style>
     .title-container {
@@ -16,7 +16,7 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         gap: 15px;
-        margin-top: 5vh;
+        margin-top: 3vh;
         margin-bottom: 0px;
     }
     .logo-img {
@@ -26,7 +26,7 @@ st.markdown("""
         object-fit: cover;
     }
     .main-title {
-        font-size: 3rem;
+        font-size: 2.8rem;
         font-weight: 800;
         background: linear-gradient(45deg, #4F46E5, #06B6D4);
         -webkit-background-clip: text;
@@ -35,24 +35,34 @@ st.markdown("""
     }
     .sub-title {
         text-align: center;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: #9CA3AF;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         font-weight: 500;
     }
     .sim-container iframe {
         width: 100%;
-        height: 520px;
+        height: 500px;
         border: 1px solid #374151;
         border-radius: 12px;
     }
-    .suggestion-box {
-        background-color: #1F2937;
-        padding: 12px 18px;
-        border-radius: 8px;
-        border-left: 4px solid #06B6D4;
-        margin-bottom: 15px;
-        color: #E5E7EB;
+    .topic-card {
+        background-color: #1E293B;
+        border: 1px solid #334155;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+    }
+    .topic-title {
+        color: #38BDF8;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+    .sample-q {
+        color: #CBD5E1;
+        font-size: 0.95rem;
+        font-style: italic;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -61,290 +71,273 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 3. Precise PCM Router & Content Engine with Suggested Questions
+# 3. Precise PCM Router & Content Engine (Strict Matching)
 def get_pcm_response(query):
     text = query.lower()
     
-    # --- PHYSICS 1: Electrostatics ---
-    if any(k in text for k in ["electrostatics", "charges", "electric field", "charge"]):
+    # ================= PHYSICS =================
+    if "electrostatic" in text or "charge" in text or "electric field" in text:
         return """
 ### ⚡ Electrostatics — Charges & Electric Field
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "Explain electric field lines between two positive charges."<br>
-• "How does distance affect the electrostatic force between charges?"
-</div>
-
 **Key Theory Highlights:**
-* **Coulomb's Law:** $F = \\frac{1}{4\\pi\\varepsilon_0} \\frac{q_1 q_2}{r^2}$.
-* Electric field lines originate from positive charges and terminate on negative charges.
+* **Coulomb's Law:** $F = \\frac{k \\cdot |q_1 q_2|}{r^2}$
+* **Electric Field ($E$):** Force experienced per unit positive test charge ($E = \\frac{F}{q}$).
 
 ---
-### 🔬 Interactive Field & Charge Visualizer
+### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/electric-field-hockey/latest/electric-field-hockey_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Drag positive or negative charges onto the play area.
+2. Use the sensor to measure electric field strength and direction.
 """
 
-    # --- PHYSICS 2: Electric Circuits ---
-    elif any(k in text for k in ["circuit", "ohm", "resistance", "current"]):
+    elif "circuit" in text or "ohm" in text or "resistance" in text or "current" in text:
         return """
 ### 🔌 Electric Circuits — Current, Resistance, Ohm’s Law
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What is Ohm's Law and how does resistance affect current?"<br>
-• "How to connect a simple DC circuit with a bulb and battery?"
-</div>
-
 **Key Theory Highlights:**
-* **Ohm's Law:** $V = IR$.
-* Equivalent resistance in series ($R = R_1 + R_2$) and parallel ($\\frac{1}{R} = \\frac{1}{R_1} + \\frac{1}{R_2}$).
+* **Ohm's Law:** $V = IR$ (Voltage = Current $\\times$ Resistance).
+* **Series vs Parallel:** Understanding equivalent resistance in circuits.
 
 ---
-### 🔬 Interactive Circuit Construction Kit
+### 🔬 Interactive Simulation
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Drag wires, batteries, and resistors into the workspace.
+2. Connect them together to form a closed loop and observe current flow.
 """
 
-    # --- PHYSICS 3: Magnetism ---
-    elif any(k in text for k in ["magnet", "solenoid", "electromagnet", "magnetic field"]):
+    elif "solenoid" in text:
+        return """
+### 🌀 Solenoid — Magnetic Field & Electromagnets
+
+**Key Theory Highlights:**
+* **Solenoid Field:** $B = \\mu_0 n I$ (Uniform magnetic field inside a long current-carrying coil).
+* Magnetic field lines inside are parallel and strong, while outside they are nearly zero.
+
+---
+### 🔬 Interactive Simulation
+<div class="sim-container">
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+</div>
+
+**💡 Beginner Guide (English):**
+1. Move the bar magnet in and out of the coil.
+2. Observe how the magnetic flux change produces a current and lights up the bulb.
+"""
+
+    elif "magnet" in text or "electromagnet" in text:
         return """
 ### 🧲 Magnetism — Magnetic Field & Electromagnets
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What is the magnetic field pattern inside a current-carrying solenoid?"<br>
-• "How does changing current strength affect an electromagnet?"
-</div>
-
 **Key Theory Highlights:**
-* Solenoid magnetic field: $B = \\mu_0 n I$.
-* Magnetic field lines form continuous closed loops from North to South outside, and South to North inside.
+* Magnetic field lines form continuous closed loops from North to South pole.
+* Electromagnet strength increases with number of turns and current.
 
 ---
-### 🔬 Interactive Magnetic Field Lab
+### 🔬 Interactive Simulation
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Check the magnetic field lines option.
+2. Move the compass around the magnet to check field directions.
 """
 
-    # --- PHYSICS 4: Electromagnetic Induction ---
-    elif any(k in text for k in ["induction", "faraday", "generator", "emi", "lenz"]):
+    elif "induction" in text or "faraday" in text or "generator" in text or "emi" in text:
         return """
 ### ⚡ Electromagnetic Induction — Faraday’s Law, Generator
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "State Faraday's Law of Electromagnetic Induction."<br>
-• "How does a bar magnet moving through a coil produce electric current?"
-</div>
-
 **Key Theory Highlights:**
-* **Faraday's Law:** Induced EMF $\\mathcal{E} = -\\frac{d\\Phi}{dt}$.
-* **Lenz's Law:** Direction of induced current always opposes the change producing it.
+* **Faraday's Law:** $\\mathcal{E} = -\\frac{d\\Phi_B}{dt}$ (Induced EMF depends on rate of change of magnetic flux).
+* **Lenz's Law:** Induced current opposes the change producing it.
 
 ---
-### 🔬 Interactive Induction Generator
+### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Rotate the loop inside the magnetic field to generate electricity.
+2. Observe AC voltage variations on the oscilloscope screen.
 """
 
-    # --- PHYSICS 5: Ray Optics ---
-    elif any(k in text for k in ["optics", "lens", "mirror", "refraction", "reflection"]):
+    elif "lens" in text or "mirror" in text or "optics" in text:
         return """
-### 👓 Ray Optics — Lenses & Mirrors
-
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What is the lens maker's formula?"<br>
-• "How do convex and concave lenses form images?"
-</div>
+### 🔍 Ray Optics — Lenses & Mirrors
 
 **Key Theory Highlights:**
-* Mirror/Lens formula: $\\frac{1}{f} = \\frac{1}{v} \\pm \\frac{1}{u}$.
-* Snell's Law: $n_1 \\sin i = n_2 \\sin r$.
+* **Mirror Formula:** $\\frac{1}{f} = \\frac{1}{v} + \\frac{1}{u}$
+* **Lens Formula:** $\\frac{1}{f} = \\frac{1}{v} - \\frac{1}{u}$
 
 ---
-### 🔬 Interactive Bending Light & Optics Lab
+### 🔬 Interactive Simulation
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Place an object in front of a convex/concave lens.
+2. Adjust focal length and object distance to see real or virtual images.
 """
 
-    # --- CHEMISTRY 1: Electrochemistry ---
-    elif any(k in text for k in ["electrochemistry", "galvanic", "cell", "electrode potential"]):
+
+    # ================= CHEMISTRY =================
+    elif "electrochemistry" in text or "galvanic" in text or "cell" in text:
         return """
 ### 🔋 Electrochemistry — Galvanic Cells, Voltage
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "Explain the working of a Daniell Cell (Galvanic Cell)."<br>
-• "What is Nernst Equation for electrode potential?"
-</div>
-
 **Key Theory Highlights:**
-* Oxidation occurs at Anode (negative electrode), Reduction occurs at Cathode (positive electrode).
-* Cell potential: $E_{cell} = E_{cathode} - E_{anode}$.
+* **Cell Potential:** $E_{cell} = E_{cathode} - E_{anode}$
+* Oxidation takes place at anode and reduction at cathode.
 
 ---
-### 🔬 Interactive Electrochemical Cell Lab
+### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/battery-voltage/latest/battery-voltage_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Select different metals and place them in salt solutions.
+2. Compare reactivity and observe voltage generated in the cell.
 """
 
-    # --- CHEMISTRY 2: Chemical Kinetics ---
-    elif any(k in text for k in ["kinetics", "reaction rate", "concentration", "order of reaction"]):
+    elif "kinetics" in text or "reaction rate" in text or "concentration" in text:
         return """
 ### ⏱️ Chemical Kinetics — Reaction Rate & Concentration
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What factors affect the rate of a chemical reaction?"<br>
-• "What is the difference between molecularity and order of a reaction?"
-</div>
-
 **Key Theory Highlights:**
-* Rate Law: Rate = $k[A]^x[B]^y$.
-* Arrhenius Equation: $k = A e^{-E_a / RT}$.
+* **Rate Law:** Rate = $k[A]^x[B]^y$
+* Higher concentration or temperature increases collision frequency and reaction rate.
 
 ---
-### 🔬 Interactive Reaction Kinetics Lab
+### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactants-products-and-leftovers/latest/reactants-products-and-leftovers_en.html"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Pump reactant molecules into the chamber.
+2. Adjust temperature and initial amounts to track product formation over time.
 """
 
-    # --- CHEMISTRY 3: Solutions ---
-    elif any(k in text for k in ["solution", "molarity", "dilution", "colligative"]):
+    elif "solution" in text or "molarity" in text or "dilution" in text:
         return """
 ### 🧪 Solutions — Concentration, Molarity, Dilution
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What is the formula for calculating Molarity and Molality?"<br>
-• "How does adding solute change solution concentration?"
-</div>
-
 **Key Theory Highlights:**
 * **Molarity ($M$):** Moles of solute per liter of solution.
-* **Raoult's Law:** Partial vapor pressure of each volatile component is directly proportional to its mole fraction.
+* **Dilution rule:** $M_1V_1 = M_2V_2$
 
 ---
-### 🔬 Interactive Solution Concentration Lab
+### 🔬 Interactive Simulation
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Add solute or solvent to change solution concentration.
+2. Use the concentration meter to measure molarity.
 """
 
-    # --- CHEMISTRY 4: Acids & Bases ---
-    elif any(k in text for k in ["ph", "acid", "base", "indicator"]):
+    elif "ph" in text or "acid" in text or "base" in text or "indicator" in text:
         return """
-### ⚗️ Acids & Bases — pH and Indicators
-
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "How to calculate the pH of a strong acid or base solution?"<br>
-• "What are acid-base indicators?"
-</div>
+### 🧪 Acids & Bases — pH and Indicators
 
 **Key Theory Highlights:**
-* $\\text{pH} = -\\log[H^+]$.
-* Neutral: $\\text{pH} = 7$, Acidic: $\\text{pH} < 7$, Basic: $\\text{pH} > 7$.
+* $\\text{pH} = -\\log[H^+]$
+* Acidic solutions ($\\text{pH} < 7$), Basic solutions ($\\text{pH} > 7$).
 
 ---
-### 🔬 Interactive pH Scale Lab
+### 🔬 Interactive Simulation
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html?screens=1"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Use the dropper to add different liquids (coffee, soap, water) to the beaker.
+2. Dip the pH sensor to check exact acidic or basic nature.
 """
 
-    # --- CHEMISTRY 5: Surface Chemistry ---
-    elif any(k in text for k in ["surface chemistry", "adsorption", "colloid", "catalysis"]):
+    elif "surface chemistry" in text or "adsorption" in text or "colloid" in text:
         return """
-### 🧽 Surface Chemistry — Adsorption/Colloids
-
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What is the difference between physisorption and chemisorption?"<br>
-• "What are lyophilic and lyophobic colloids?"
-</div>
+### ⚗️ Surface Chemistry — Adsorption / Colloids
 
 **Key Theory Highlights:**
-* Freundlich Adsorption Isotherm: $\\frac{x}{m} = k P^{1/n}$ (at constant temperature).
-* Tyndall effect is exhibited by colloidal solutions.
+* **Adsorption:** Accumulation of molecular species at the surface rather than in the bulk.
+* Lyophilic and Lyophobic colloids show Tyndall effect.
 
 ---
-### 🔬 Interactive States of Matter & Surface Interaction
+### 🔬 Interactive Simulation
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+<div>
+1. Heat or cool atoms/molecules to observe phase changes.<br>
+2. Analyze surface interactions and particle behavior.
+</div>
 """
 
-    # --- MATHS 1: Application of Derivatives ---
-    elif any(k in text for k in ["derivative", "application of derivatives", "tangent", "maxima", "minima"]):
-        return """
-### 📈 Application of Derivatives (Class 12 Math)
 
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "How to find the equation of tangent and normal to a curve?"<br>
-• "What is the test for local maxima and local minima?"
-</div>
+    # ================= MATHEMATICS =================
+    elif "derivative" in text or "application of derivatives" in text or "rate of change" in text:
+        return """
+### 📈 Application of Derivatives
 
 **Key Theory Highlights:**
-* Rate of change: $\\frac{dy}{dx}$ represents rate of change of $y$ with respect to $x$.
-* Increasing function: $\\frac{dy}{dx} > 0$ | Decreasing function: $\\frac{dy}{dx} < 0$.
+* Rate of change of quantities, increasing/decreasing functions, tangents and normals.
+* Finding local maxima and minima using first and second derivative tests.
 
 ---
-### 🔬 Interactive Function Visualizer
+### 📐 Interactive Canvas (GeoGebra)
 <div class="sim-container">
-    <iframe src="https://www.geogebra.org/calculator?embed"></iframe>
+    <iframe src="https://www.geogebra.org/graphing?embed"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Type functions like `f(x) = x^3 - 3x` in the input bar.
+2. Find turning points and slopes directly on the graph.
 """
 
-    # --- MATHS 2: Probability ---
-    elif any(k in text for k in ["probability", "bayes", "conditional probability", "random variable"]):
+    elif "probability" in text or "bayes" in text or "conditional" in text:
         return """
-### 🎲 Probability (Class 12 Math)
-
-<div class="suggestion-box">
-<strong>💡 Aap aise questions puch sakte hain:</strong><br>
-• "What is conditional probability formula?"<br>
-• "Explain Bayes' Theorem with an example."
-</div>
+### 🎲 Probability
 
 **Key Theory Highlights:**
-* Conditional Probability: $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$.
-* Multiplication theorem: $P(A \\cap B) = P(A)P(B|A)$.
+* Conditional probability: $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$
+* Bayes' Theorem and Probability Distributions.
 
 ---
-### 🔬 Interactive Probability Visualizer
+### 📐 Interactive Canvas (GeoGebra)
 <div class="sim-container">
-    <iframe src="https://www.geogebra.org/calculator?embed"></iframe>
+    <iframe src="https://www.geogebra.org/scientific?embed"></iframe>
 </div>
+
+**💡 Beginner Guide (English):**
+1. Use scientific tools for quick statistical calculations and permutations.
 """
 
-    # --- FALLBACK / GENERAL QUERY ---
+
+    # --- FALLBACK / DEFAULT WELCOME SCREEN ---
     else:
         return f"""
-### 📘 ChitraVidya AI | Class 12 PCM Guide: **{query.title()}**
+### 📘 ChitraVidya AI: **{query.title()}**
 
-<div class="suggestion-box">
-<strong>💡 Top topics available to explore:</strong><br>
-• <strong>Physics:</strong> Electrostatics, Circuits, Magnetism, EMI, Ray Optics<br>
-• <strong>Chemistry:</strong> Electrochemistry, Kinetics, Solutions, Acids & Bases, Surface Chemistry<br>
-• <strong>Maths:</strong> Application of Derivatives, Probability
-</div>
-
-Aap upar diye gaye kisi bhi topic ka naam ya usse related question direct yahan type kar sakte hain!
+Please type any of the exact topics listed on the home screen to view its theory notes and interactive simulation!
 """
 
-# 4. App Main Interface Logic (Header / Logo)
+# 4. App Main Interface (Header + Visible Topics List on Screen)
 if len(st.session_state.messages) == 0:
     st.markdown("""
         <div class="title-container">
@@ -352,7 +345,78 @@ if len(st.session_state.messages) == 0:
             <h1 class="main-title">Ask ChitraVidya AI</h1>
         </div>
     """, unsafe_allow_html=True)
-    st.markdown('<p class="sub-title">for Class 12th PCM</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-title">Class 12th PCM Interactive Guide</p>', unsafe_allow_html=True)
+
+    st.markdown("### 📚 Available Topics & How to Ask:")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("#### ⚡ Physics Topics")
+        st.markdown("""
+        <div class="topic-card">
+            <div class="topic-title">1. Electrostatics</div>
+            <div class="sample-q">💬 Ask: "Explain electrostatics and charges"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">2. Electric Circuits</div>
+            <div class="sample-q">💬 Ask: "Explain electric circuits and Ohm's law"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">3. Solenoid</div>
+            <div class="sample-q">💬 Ask: "Explain solenoid magnetic field"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">4. Magnetism</div>
+            <div class="sample-q">💬 Ask: "Explain magnetism and electromagnets"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">5. Electromagnetic Induction</div>
+            <div class="sample-q">💬 Ask: "Explain Faraday's law and EMI"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">6. Ray Optics</div>
+            <div class="sample-q">💬 Ask: "Explain lenses and mirrors in optics"</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with col2:
+        st.markdown("#### 🧪 Chemistry Topics")
+        st.markdown("""
+        <div class="topic-card">
+            <div class="topic-title">7. Electrochemistry</div>
+            <div class="sample-q">💬 Ask: "Explain galvanic cells and electrochemistry"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">8. Chemical Kinetics</div>
+            <div class="sample-q">💬 Ask: "Explain chemical kinetics and reaction rate"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">9. Solutions</div>
+            <div class="sample-q">💬 Ask: "Explain solutions and molarity"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">10. Acids & Bases</div>
+            <div class="sample-q">💬 Ask: "Explain pH scale and acids bases"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">11. Surface Chemistry</div>
+            <div class="sample-q">💬 Ask: "Explain adsorption and surface chemistry"</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with col3:
+        st.markdown("#### 📐 Mathematics Topics")
+        st.markdown("""
+        <div class="topic-card">
+            <div class="topic-title">12. Application of Derivatives</div>
+            <div class="sample-q">💬 Ask: "Explain application of derivatives"</div>
+        </div>
+        <div class="topic-card">
+            <div class="topic-title">13. Probability</div>
+            <div class="sample-q">💬 Ask: "Explain probability and conditional probability"</div>
+        </div>
+        """, unsafe_allow_html=True)
 
 # Display Chat History
 for msg in st.session_state.messages:
@@ -360,16 +424,16 @@ for msg in st.session_state.messages:
         st.markdown(msg["content"], unsafe_allow_html=True)
 
 # 5. Bottom Chat Input & Auto-Scroll Mechanism
-user_input = st.chat_input("Ask ChitraVidya AI...")
+user_input = st.chat_input("Ask ChitraVidya AI (e.g. 'Explain solenoid')...")
 
 if user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
     
-    # Generate structured PCM response
+    # Generate structured response
     response = get_pcm_response(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
     
-    # Auto-scroll script injection for instant view focus
+    # Auto-scroll script injection
     st.markdown(
         """
         <script>
