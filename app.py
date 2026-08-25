@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Clean UI & Hiding PhET Control Panels / Branding
+# Custom CSS for Clean UI & Layout Structure
 st.markdown("""
     <style>
     .title-container {
@@ -16,17 +16,17 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         gap: 15px;
-        margin-top: 3vh;
+        margin-top: 1vh;
         margin-bottom: 0px;
     }
     .logo-img {
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         object-fit: cover;
     }
     .main-title {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
         font-weight: 800;
         background: linear-gradient(45deg, #4F46E5, #06B6D4);
         -webkit-background-clip: text;
@@ -35,44 +35,55 @@ st.markdown("""
     }
     .sub-title {
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         color: #9CA3AF;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         font-weight: 500;
     }
-    /* Clean simulation wrapper to hide extra borders/bars */
     .sim-container {
         position: relative;
         overflow: hidden;
         border-radius: 12px;
         border: 1px solid #374151;
         background: #0f172a;
+        margin-bottom: 10px;
     }
     .sim-container iframe {
         width: 100%;
-        height: 520px;
+        height: 480px;
         border: none;
-        /* Scales or shifts iframe slightly if needed to hide top/bottom branding bars */
-        margin-top: -35px; 
-        margin-bottom: -45px;
     }
     .topic-card {
         background-color: #1E293B;
         border: 1px solid #334155;
-        padding: 15px;
+        padding: 12px;
         border-radius: 10px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
     .topic-title {
         color: #38BDF8;
         font-weight: 700;
-        font-size: 1.1rem;
-        margin-bottom: 5px;
+        font-size: 1.05rem;
+        margin-bottom: 3px;
     }
     .sample-q {
         color: #CBD5E1;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         font-style: italic;
+    }
+    .sim-btn {
+        display: inline-block;
+        background-color: #2563EB;
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+    .sim-btn:hover {
+        background-color: #1D4ED8;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -96,8 +107,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -115,8 +127,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -134,8 +147,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1&ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -153,8 +167,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1&ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -172,8 +187,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2&ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -191,8 +207,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -212,8 +229,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -231,8 +249,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -250,8 +269,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -269,8 +289,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -288,8 +309,9 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
+<a href="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html?ea=false&homeButton=false&navigationBar=false"></iframe>
+    <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -309,8 +331,9 @@ def get_pcm_response(query):
 
 ---
 ### 📐 Interactive Canvas
+<a href="https://www.geogebra.org/graphing?embed" target="_blank" class="sim-btn">🔗 Click to Open Calculator in Full Screen</a>
 <div class="sim-container">
-    <iframe src="https://www.geogebra.org/graphing?embed&showToolbar=false&showMenuBar=false"></iframe>
+    <iframe src="https://www.geogebra.org/graphing?embed"></iframe>
 </div>
 
 **Beginner Guide:**
@@ -328,6 +351,7 @@ def get_pcm_response(query):
 
 ---
 ### 📐 Interactive Canvas
+<a href="https://www.geogebra.org/scientific?embed" target="_blank" class="sim-btn">🔗 Click to Open Tool in Full Screen</a>
 <div class="sim-container">
     <iframe src="https://www.geogebra.org/scientific?embed"></iframe>
 </div>
@@ -345,93 +369,94 @@ def get_pcm_response(query):
 Please type any of the exact topics listed on the home screen to view its theory notes and interactive simulation!
 """
 
-# 4. App Main Interface (Header + Visible Topics List on Screen)
-if len(st.session_state.messages) == 0:
+# 4. Persistent Home Screen (Visible Always at the Top)
+st.markdown("""
+    <div class="title-container">
+        <img src="https://img.icons8.com/color/96/sparkling.png" class="logo-img">
+        <h1 class="main-title">Ask ChitraVidya AI</h1>
+    </div>
+""", unsafe_allow_html=True)
+st.markdown('<p class="sub-title">Class 12th PCM Interactive Guide</p>', unsafe_allow_html=True)
+
+st.markdown("### 📚 Available Topics & How to Ask:")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("#### ⚡ Physics Topics")
     st.markdown("""
-        <div class="title-container">
-            <img src="https://img.icons8.com/color/96/sparkling.png" class="logo-img">
-            <h1 class="main-title">Ask ChitraVidya AI</h1>
-        </div>
+    <div class="topic-card">
+        <div class="topic-title">1. Electrostatics</div>
+        <div class="sample-q">💬 Ask: "Explain electrostatics and charges"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">2. Electric Circuits</div>
+        <div class="sample-q">💬 Ask: "Explain electric circuits and Ohm's law"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">3. Solenoid</div>
+        <div class="sample-q">💬 Ask: "Explain solenoid magnetic field"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">4. Magnetism</div>
+        <div class="sample-q">💬 Ask: "Explain magnetism and electromagnets"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">5. Electromagnetic Induction</div>
+        <div class="sample-q">💬 Ask: "Explain Faraday's law and EMI"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">6. Ray Optics</div>
+        <div class="sample-q">💬 Ask: "Explain lenses and mirrors in optics"</div>
+    </div>
     """, unsafe_allow_html=True)
-    st.markdown('<p class="sub-title">Class 12th PCM Interactive Guide</p>', unsafe_allow_html=True)
-
-    st.markdown("### 📚 Available Topics & How to Ask:")
     
-    col1, col2, col3 = st.columns(3)
+with col2:
+    st.markdown("#### 🧪 Chemistry Topics")
+    st.markdown("""
+    <div class="topic-card">
+        <div class="topic-title">7. Electrochemistry</div>
+        <div class="sample-q">💬 Ask: "Explain galvanic cells and electrochemistry"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">8. Chemical Kinetics</div>
+        <div class="sample-q">💬 Ask: "Explain chemical kinetics and reaction rate"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">9. Solutions</div>
+        <div class="sample-q">💬 Ask: "Explain solutions and molarity"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">10. Acids & Bases</div>
+        <div class="sample-q">💬 Ask: "Explain pH scale and acids bases"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">11. Surface Chemistry</div>
+        <div class="sample-q">💬 Ask: "Explain adsorption and surface chemistry"</div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    with col1:
-        st.markdown("#### ⚡ Physics Topics")
-        st.markdown("""
-        <div class="topic-card">
-            <div class="topic-title">1. Electrostatics</div>
-            <div class="sample-q">💬 Ask: "Explain electrostatics and charges"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">2. Electric Circuits</div>
-            <div class="sample-q">💬 Ask: "Explain electric circuits and Ohm's law"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">3. Solenoid</div>
-            <div class="sample-q">💬 Ask: "Explain solenoid magnetic field"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">4. Magnetism</div>
-            <div class="sample-q">💬 Ask: "Explain magnetism and electromagnets"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">5. Electromagnetic Induction</div>
-            <div class="sample-q">💬 Ask: "Explain Faraday's law and EMI"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">6. Ray Optics</div>
-            <div class="sample-q">💬 Ask: "Explain lenses and mirrors in optics"</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with col2:
-        st.markdown("#### 🧪 Chemistry Topics")
-        st.markdown("""
-        <div class="topic-card">
-            <div class="topic-title">7. Electrochemistry</div>
-            <div class="sample-q">💬 Ask: "Explain galvanic cells and electrochemistry"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">8. Chemical Kinetics</div>
-            <div class="sample-q">💬 Ask: "Explain chemical kinetics and reaction rate"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">9. Solutions</div>
-            <div class="sample-q">💬 Ask: "Explain solutions and molarity"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">10. Acids & Bases</div>
-            <div class="sample-q">💬 Ask: "Explain pH scale and acids bases"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">11. Surface Chemistry</div>
-            <div class="sample-q">💬 Ask: "Explain adsorption and surface chemistry"</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with col3:
-        st.markdown("#### 📐 Mathematics Topics")
-        st.markdown("""
-        <div class="topic-card">
-            <div class="topic-title">12. Application of Derivatives</div>
-            <div class="sample-q">💬 Ask: "Explain application of derivatives"</div>
-        </div>
-        <div class="topic-card">
-            <div class="topic-title">13. Probability</div>
-            <div class="sample-q">💬 Ask: "Explain probability and conditional probability"</div>
-        </div>
-        """, unsafe_allow_html=True)
+with col3:
+    st.markdown("#### 📐 Mathematics Topics")
+    st.markdown("""
+    <div class="topic-card">
+        <div class="topic-title">12. Application of Derivatives</div>
+        <div class="sample-q">💬 Ask: "Explain application of derivatives"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">13. Probability</div>
+        <div class="sample-q">💬 Ask: "Explain probability and conditional probability"</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-# Display Chat History
+st.markdown("---")
+
+# 5. Display Chat History Below Topics
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"], unsafe_allow_html=True)
 
-# 5. Bottom Chat Input & Auto-Scroll Mechanism
+# 6. Bottom Chat Input
 user_input = st.chat_input("Ask ChitraVidya AI (e.g. 'Explain solenoid')...")
 
 if user_input:
@@ -440,15 +465,5 @@ if user_input:
     # Generate structured response
     response = get_pcm_response(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
-    
-    # Auto-scroll script injection
-    st.markdown(
-        """
-        <script>
-            window.parent.document.querySelector('section.main').scrollTo({top: 100000, behavior: 'smooth'});
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
     
     st.rerun()
