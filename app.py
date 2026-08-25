@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Clean UI & Layout Structure
+# Custom CSS for Clean UI & Hiding PhET Footer Bar completely
 st.markdown("""
     <style>
     .title-container {
@@ -40,8 +40,10 @@ st.markdown("""
         margin-bottom: 1.5rem;
         font-weight: 500;
     }
+    /* Hide the bottom PhET navigation/logo bar by cropping the iframe view */
     .sim-container {
         position: relative;
+        height: 440px;
         overflow: hidden;
         border-radius: 12px;
         border: 1px solid #374151;
@@ -50,8 +52,9 @@ st.markdown("""
     }
     .sim-container iframe {
         width: 100%;
-        height: 480px;
+        height: 520px;
         border: none;
+        margin-bottom: -50px; /* Crops out the PhET bottom black toolbar */
     }
     .topic-card {
         background-color: #1E293B;
@@ -80,7 +83,7 @@ st.markdown("""
         text-decoration: none;
         font-weight: 600;
         font-size: 0.9rem;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
     .sim-btn:hover {
         background-color: #1D4ED8;
@@ -107,7 +110,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"></iframe>
 </div>
@@ -127,7 +130,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
 </div>
@@ -147,7 +150,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
@@ -167,7 +170,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
 </div>
@@ -187,7 +190,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2"></iframe>
 </div>
@@ -207,7 +210,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"></iframe>
 </div>
@@ -229,7 +232,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html"></iframe>
 </div>
@@ -249,7 +252,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html"></iframe>
 </div>
@@ -269,7 +272,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"></iframe>
 </div>
@@ -289,7 +292,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html"></iframe>
 </div>
@@ -309,7 +312,7 @@ def get_pcm_response(query):
 
 ---
 ### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Simulation in Full Screen</a>
+<a href="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
 <div class="sim-container">
     <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
 </div>
@@ -331,7 +334,7 @@ def get_pcm_response(query):
 
 ---
 ### 📐 Interactive Canvas
-<a href="https://www.geogebra.org/graphing?embed" target="_blank" class="sim-btn">🔗 Click to Open Calculator in Full Screen</a>
+<a href="https://www.geogebra.org/graphing?embed" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Calculator</a>
 <div class="sim-container">
     <iframe src="https://www.geogebra.org/graphing?embed"></iframe>
 </div>
@@ -351,7 +354,7 @@ def get_pcm_response(query):
 
 ---
 ### 📐 Interactive Canvas
-<a href="https://www.geogebra.org/scientific?embed" target="_blank" class="sim-btn">🔗 Click to Open Tool in Full Screen</a>
+<a href="https://www.geogebra.org/scientific?embed" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Tool</a>
 <div class="sim-container">
     <iframe src="https://www.geogebra.org/scientific?embed"></iframe>
 </div>
@@ -452,8 +455,11 @@ with col3:
 st.markdown("---")
 
 # 5. Display Chat History Below Topics
-for msg in st.session_state.messages:
+for i, msg in enumerate(st.session_state.messages):
     with st.chat_message(msg["role"]):
+        # Add an anchor point at the start of new conversation turns for smooth auto-scrolling
+        if msg["role"] == "user":
+            st.markdown(f'<div id="msg-{i}"></div>', unsafe_allow_html=True)
         st.markdown(msg["content"], unsafe_allow_html=True)
 
 # 6. Bottom Chat Input
@@ -465,5 +471,19 @@ if user_input:
     # Generate structured response
     response = get_pcm_response(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    # Auto-scroll injection targeting the newly added question block
+    new_index = len(st.session_state.messages) - 2
+    st.markdown(
+        f"""
+        <script>
+            const targetElement = window.parent.document.getElementById('msg-{new_index}');
+            if (targetElement) {{
+                targetElement.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+            }}
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
     
     st.rerun()
