@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS: Hide PhET logo/3-dots on right bottom & keep sound icon intact
+# Custom CSS: Hide PhET branding, settings icon & 3-dots on right bottom
 st.markdown("""
     <style>
     .title-container {
@@ -40,7 +40,6 @@ st.markdown("""
         margin-bottom: 1.5rem;
         font-weight: 500;
     }
-    /* Simulation Container with overlay to hide bottom-right PhET branding */
     .sim-container {
         position: relative;
         height: 550px;
@@ -55,13 +54,13 @@ st.markdown("""
         height: 100%;
         border: none;
     }
-    /* Overlay box hiding PhET Logo & 3 Dots on bottom right corner */
+    /* Extended Overlay box hiding PhET Logo, Settings Gear & 3 Dots */
     .brand-overlay {
         position: absolute;
         bottom: 0;
         right: 0;
-        width: 150px;
-        height: 42px;
+        width: 180px;
+        height: 50px;
         background-color: #0d1117;
         z-index: 10;
         pointer-events: auto;
@@ -174,6 +173,25 @@ def get_pcm_response(query):
             ]
         )
 
+    # EM Waves (New Topic Added)
+    elif "em wave" in text or "electromagnetic wave" in text or "emw" in text:
+        return render_pcm_response(
+            "🌊 Electromagnetic Waves (EM Waves)",
+            [
+                "**Nature of EM Waves:** Transverse non-mechanical waves produced by accelerating electric charges.",
+                "**Perpendicular Oscillations:** Electric vector ($E$) and Magnetic vector ($B$) oscillate perpendicular to each other and to propagation direction ($c = \\frac{E_0}{B_0}$).",
+                "**Speed of Light:** Speed in vacuum is given by $c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}} \\approx 3 \\times 10^8 \\text{ m/s}$.",
+                "**Displacement Current ($I_d$):** Current due to changing electric flux: $I_d = \\varepsilon_0 \\frac{d\\Phi_E}{dt}$.",
+                "**Electromagnetic Spectrum:** Radio waves $\\rightarrow$ Microwaves $\\rightarrow$ Infrared $\\rightarrow$ Visible $\\rightarrow$ UV $\\rightarrow$ X-rays $\\rightarrow$ Gamma rays."
+            ],
+            "https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_en.html",
+            [
+                "Select the Light tab in the simulation.",
+                "Adjust frequency and amplitude sliders.",
+                "Observe transverse wave oscillations and wave fronts."
+            ]
+        )
+
     # Faraday's Law / EMI
     elif "induction" in text or "faraday" in text or "emi" in text or "generator" in text:
         return render_pcm_response(
@@ -231,22 +249,79 @@ def get_pcm_response(query):
             ]
         )
 
-    # Electrochemistry
-    elif "electrochemistry" in text or "galvanic" in text or "cell" in text:
+    # Electrochemistry (Fixed Exact Matching)
+    elif "electrochemistry" in text or "galvanic" in text or "cell" in text or "electrochemical" in text:
         return render_pcm_response(
             "🔋 Electrochemistry & Galvanic Cells",
             [
-                "**Galvanic Cell:** Converts chemical energy into electrical energy via redox reaction.",
-                "**Anode vs Cathode:** Oxidation occurs at Anode, Reduction occurs at Cathode.",
-                "**Nernst Equation:** $E = E^0 - \\frac{RT}{nF} \\ln Q$.",
-                "**Kohlrausch's Law:** Limiting molar conductivity is the sum of ionic conductivities.",
-                "**Faraday's Law of Electrolysis:** Mass deposited is $m = Z I t$."
+                "**Galvanic Cell:** Converts chemical energy into electrical energy via spontaneous redox reactions.",
+                "**Anode vs Cathode:** Oxidation occurs at Anode (Negative electrode), Reduction occurs at Cathode (Positive electrode).",
+                "**Nernst Equation:** Calculates cell potential under non-standard conditions: $E_{cell} = E^0_{cell} - \\frac{RT}{nF} \\ln Q$.",
+                "**Kohlrausch's Law:** Limiting molar conductivity of an electrolyte is sum of individual ionic conductivities.",
+                "**Faraday's Law of Electrolysis:** Mass of substance deposited at an electrode is $m = Z I t$."
             ],
             "https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html",
             [
                 "Dip different metal strips into chemical solutions.",
                 "Compare electron displacement reactivity series.",
                 "Observe ion formation across different metals."
+            ]
+        )
+
+    # Solutions (Fixed Exact Matching)
+    elif "solution" in text or "molarity" in text or "concentration" in text or "dilution" in text:
+        return render_pcm_response(
+            "🧪 Solutions & Concentration Terms",
+            [
+                "**Molarity ($M$):** Moles of solute per liter of solution ($M = \\frac{n_{solute}}{V(L)}$).",
+                "**Molality ($m$):** Moles of solute per kg of solvent ($m = \\frac{n_{solute}}{W_{solvent}(kg)}$).",
+                "**Raoult's Law:** Partial vapor pressure of solvent is proportional to its mole fraction ($p_1 = x_1 p_1^0$).",
+                "**Colligative Properties:** Properties depending on number of solute particles (e.g., Osmotic Pressure $\\Pi = CRT$).",
+                "**Van 't Hoff Factor ($i$):** Accounts for association or dissociation of solute particles ($i = \\frac{\\text{Observed Property}}{\\text{Theoretical Property}}$)."
+            ],
+            "https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html",
+            [
+                "Add solute powders or liquids into water container.",
+                "Dip the concentration probe to measure molarity value.",
+                "Evaporate water or add solvent to observe concentration shifts."
+            ]
+        )
+
+    # Chemical Kinetics
+    elif "kinetics" in text or "rate of reaction" in text:
+        return render_pcm_response(
+            "⏱️ Chemical Kinetics & Reaction Rates",
+            [
+                "**Rate of Reaction:** Change in concentration of reactants/products per unit time.",
+                "**Rate Law:** Mathematical equation relating rate to reactant concentrations ($Rate = k[A]^x[B]^y$).",
+                "**Half-Life ($t_{1/2}$):** Time taken for concentration to reduce to half (For 1st order: $t_{1/2} = \\frac{0.693}{k}$).",
+                "**Arrhenius Equation:** Describes temperature dependence: $k = A e^{-E_a / RT}$.",
+                "**Activation Energy ($E_a$):** Minimum energy required for reactants to form transition complex."
+            ],
+            "https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html",
+            [
+                "Pump reactant molecules into the reaction chamber.",
+                "Adjust temperature slider to view kinetic changes.",
+                "Observe collision energy barriers."
+            ]
+        )
+
+    # Application of Derivatives
+    elif "derivative" in text or "calculus" in text:
+        return render_pcm_response(
+            "📈 Application of Derivatives",
+            [
+                "**Rate of Change:** Derivative $\\frac{dy}{dx}$ represents instantaneous rate of change.",
+                "**Tangents & Normals:** Slope of tangent to curve $y=f(x)$ is $m = \\frac{dy}{dx}$.",
+                "**Increasing/Decreasing Functions:** $f(x)$ is strictly increasing if $f'(x) > 0$.",
+                "**First Derivative Test:** Critical point $x=c$ is local maxima if $f'(x)$ changes sign from positive to negative.",
+                "**Second Derivative Test:** If $f'(c) = 0$ and $f''(c) < 0$, point $c$ is local maximum."
+            ],
+            "https://www.geogebra.org/graphing?embed",
+            [
+                "Type function equation like `f(x) = x^3 - 3*x` in input box.",
+                "Type `Derivative(f)` to graph slope behavior.",
+                "Locate turning points and critical values directly."
             ]
         )
 
@@ -263,7 +338,7 @@ def get_pcm_response(query):
             ]
         )
 
-# 4. Persistent Home Screen
+# 4. Persistent Home Screen with Topics List and Sample Questions
 st.markdown("""
     <div class="title-container">
         <img src="https://img.icons8.com/color/96/sparkling.png" class="logo-img">
@@ -271,6 +346,65 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 st.markdown('<p class="sub-title">Class 12th PCM Interactive Guide</p>', unsafe_allow_html=True)
+
+st.markdown("### 📚 Available Topics & How to Ask:")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("#### ⚡ Physics Topics")
+    st.markdown("""
+    <div class="topic-card">
+        <div class="topic-title">1. Electrostatics</div>
+        <div class="sample-q">💬 Ask: "Explain electrostatics"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">2. Electric Circuits</div>
+        <div class="sample-q">💬 Ask: "Explain electric circuits"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">3. Solenoid</div>
+        <div class="sample-q">💬 Ask: "Explain solenoid"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">4. Electromagnetic Induction</div>
+        <div class="sample-q">💬 Ask: "Explain Faraday's law"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">5. EM Waves</div>
+        <div class="sample-q">💬 Ask: "Explain EM waves"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">6. Ray Optics</div>
+        <div class="sample-q">💬 Ask: "Explain optics and lenses"</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+with col2:
+    st.markdown("#### 🧪 Chemistry Topics")
+    st.markdown("""
+    <div class="topic-card">
+        <div class="topic-title">7. Electrochemistry</div>
+        <div class="sample-q">💬 Ask: "Explain electrochemistry"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">8. Chemical Kinetics</div>
+        <div class="sample-q">💬 Ask: "Explain chemical kinetics"</div>
+    </div>
+    <div class="topic-card">
+        <div class="topic-title">9. Solutions</div>
+        <div class="sample-q">💬 Ask: "Explain solutions and molarity"</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+with col3:
+    st.markdown("#### 📐 Mathematics Topics")
+    st.markdown("""
+    <div class="topic-card">
+        <div class="topic-title">10. Application of Derivatives</div>
+        <div class="sample-q">💬 Ask: "Explain derivatives"</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -292,7 +426,7 @@ if user_input:
     
     st.rerun()
 
-# Execute Auto-Scroll to the newly searched response position
+# Auto-Scroll Script Execution
 st.markdown(
     """
     <script>
