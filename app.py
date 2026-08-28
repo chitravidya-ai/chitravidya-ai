@@ -1,489 +1,823 @@
+import os
+from pathlib import Path
+
+ROOT = Path("chitravidya-ai")
+
+FILES = {}
+
+# ---------------------------------------------------------------------------
+# app.py
+# ---------------------------------------------------------------------------
+FILES["app.py"] = '''"""
+app.py -- Chitravidya AI
+
+Entry point for the Streamlit app. Wires together the sidebar, page
+router, and global styling. Run locally with:
+
+    streamlit run app.py
+
+See README.md for full setup and deployment instructions.
+"""
+
 import streamlit as st
 
-# 1. Page Configuration
+from utils.helpers import init_session_state
+from components.sidebar import render_sidebar
+from components.dashboard import (
+    render_home_page,
+    render_chapters_page,
+    render_practice_page,
+    render_saved_page,
+    render_settings_page,
+)
+from components.chat import render_chat_page
+from components.simulation import render_simulations_page
+
 st.set_page_config(
-    page_title="ChitraVidya AI | Class 12 PCM",
-    page_icon="✨",
+    page_title="Chitravidya AI | CBSE Class 12 PCM",
+    page_icon="\\U0001F393",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded",
 )
 
-# Custom CSS for Clean UI & Hiding PhET Footer Bar completely
-st.markdown("""
-    <style>
-    .title-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 1vh;
-        margin-bottom: 0px;
-    }
-    .logo-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    .main-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        background: linear-gradient(45deg, #4F46E5, #06B6D4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0;
-    }
-    .sub-title {
-        text-align: center;
-        font-size: 1.1rem;
-        color: #9CA3AF;
-        margin-bottom: 1.5rem;
-        font-weight: 500;
-    }
-    /* Hide the bottom PhET navigation/logo bar by cropping the iframe view */
-    .sim-container {
-        position: relative;
-        height: 440px;
-        overflow: hidden;
-        border-radius: 12px;
-        border: 1px solid #374151;
-        background: #0f172a;
-        margin-bottom: 10px;
-    }
-    .sim-container iframe {
-        width: 100%;
-        height: 520px;
-        border: none;
-        margin-bottom: -50px; /* Crops out the PhET bottom black toolbar */
-    }
-    .topic-card {
-        background-color: #1E293B;
-        border: 1px solid #334155;
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-    .topic-title {
-        color: #38BDF8;
-        font-weight: 700;
-        font-size: 1.05rem;
-        margin-bottom: 3px;
-    }
-    .sample-q {
-        color: #CBD5E1;
-        font-size: 0.9rem;
-        font-style: italic;
-    }
-    .sim-btn {
-        display: inline-block;
-        background-color: #2563EB;
-        color: white !important;
-        padding: 8px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 10px;
-    }
-    .sim-btn:hover {
-        background-color: #1D4ED8;
-    }
-    </style>
-""", unsafe_allow_html=True)
+init_session_state()
 
-# 2. State Initialization
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-# 3. Precise PCM Router & Content Engine (Strict Matching)
-def get_pcm_response(query):
-    text = query.lower()
-    
-    # ================= PHYSICS =================
-    if "electrostatic" in text or "charge" in text or "electric field" in text:
-        return """
-### ⚡ Electrostatics — Charges & Electric Field
-
-**Key Theory Highlights:**
-* **Coulomb's Law:** $F = \\frac{k \\cdot |q_1 q_2|}{r^2}$
-* **Electric Field ($E$):** Force experienced per unit positive test charge ($E = \\frac{F}{q}$).
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Drag positive or negative charges onto the play area.
-2. Use the sensor to measure electric field strength and direction.
+LIGHT_CSS = """
+<style>
+    .stApp { background-color: #F7F8FC; }
+    section[data-testid="stSidebar"] { background-color: #FFFFFF; border-right: 1px solid #ECEDF3; }
+    div[data-testid="stChatMessage"] { background-color: #FFFFFF; border-radius: 14px; border: 1px solid #ECEDF3; }
+    .stButton>button { border-radius: 10px; }
+</style>
 """
 
-    elif "circuit" in text or "ohm" in text or "resistance" in text or "current" in text:
-        return """
-### 🔌 Electric Circuits — Current, Resistance, Ohm’s Law
-
-**Key Theory Highlights:**
-* **Ohm's Law:** $V = IR$ (Voltage = Current $\\times$ Resistance).
-* **Series vs Parallel:** Understanding equivalent resistance in circuits.
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Drag wires, batteries, and resistors into the workspace.
-2. Connect them together to form a closed loop and observe current flow.
+DARK_CSS = """
+<style>
+    .stApp { background-color: #0E1117; color: #E6E6E6; }
+    section[data-testid="stSidebar"] { background-color: #12141B; border-right: 1px solid #22242E; }
+    div[data-testid="stChatMessage"] { background-color: #1A1D27; border-radius: 14px; border: 1px solid #22242E; }
+    .stButton>button { border-radius: 10px; }
+</style>
 """
 
-    elif "solenoid" in text:
-        return """
-### 🌀 Solenoid — Magnetic Field & Electromagnets
+st.markdown(DARK_CSS if st.session_state.theme == "dark" else LIGHT_CSS, unsafe_allow_html=True)
 
-**Key Theory Highlights:**
-* **Solenoid Field:** $B = \\mu_0 n I$ (Uniform magnetic field inside a long current-carrying coil).
-* Magnetic field lines inside are parallel and strong, while outside they are nearly zero.
+render_sidebar()
 
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
-</div>
+PAGE_RENDERERS = {
+    "Home": render_home_page,
+    "AI Tutor": render_chat_page,
+    "Physics Simulations": render_simulations_page,
+    "PCM Chapters": render_chapters_page,
+    "Practice": render_practice_page,
+    "Saved": render_saved_page,
+    "Settings": render_settings_page,
+}
 
-**Beginner Guide:**
-1. Move the bar magnet in and out of the coil.
-2. Observe how the magnetic flux change produces a current and lights up the bulb.
-"""
-
-    elif "magnet" in text or "electromagnet" in text:
-        return """
-### 🧲 Magnetism — Magnetic Field & Electromagnets
-
-**Key Theory Highlights:**
-* Magnetic field lines form continuous closed loops from North to South pole.
-* Electromagnet strength increases with number of turns and current.
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=1"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Check the magnetic field lines option.
-2. Move the compass around the magnet to check field directions.
-"""
-
-    elif "induction" in text or "faraday" in text or "generator" in text or "emi" in text:
-        return """
-### ⚡ Electromagnetic Induction — Faraday’s Law, Generator
-
-**Key Theory Highlights:**
-* **Faraday's Law:** $\\mathcal{E} = -\\frac{d\\Phi_B}{dt}$ (Induced EMF depends on rate of change of magnetic flux).
-* **Lenz's Law:** Induced current opposes the change producing it.
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html?screens=2"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Rotate the loop inside the magnetic field to generate electricity.
-2. Observe AC voltage variations on the oscilloscope screen.
-"""
-
-    elif "lens" in text or "mirror" in text or "optics" in text:
-        return """
-### 🔍 Ray Optics — Lenses & Mirrors
-
-**Key Theory Highlights:**
-* **Mirror Formula:** $\\frac{1}{f} = \\frac{1}{v} + \\frac{1}{u}$
-* **Lens Formula:** $\\frac{1}{f} = \\frac{1}{v} - \\frac{1}{u}$
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Place an object in front of a convex/concave lens.
-2. Adjust focal length and object distance to see real or virtual images.
-"""
-
-
-    # ================= CHEMISTRY =================
-    elif "electrochemistry" in text or "galvanic" in text or "cell" in text:
-        return """
-### 🔋 Electrochemistry — Galvanic Cells, Voltage
-
-**Key Theory Highlights:**
-* **Cell Potential:** $E_{cell} = E_{cathode} - E_{anode}$
-* Oxidation takes place at anode and reduction at cathode.
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Select different metals and place them in salt solutions.
-2. Compare reactivity and observe voltage generated in the cell.
-"""
-
-    elif "kinetics" in text or "reaction rate" in text or "concentration" in text:
-        return """
-### ⏱️ Chemical Kinetics — Reaction Rate & Concentration
-
-**Key Theory Highlights:**
-* **Rate Law:** Rate = $k[A]^x[B]^y$
-* Higher concentration or temperature increases collision frequency and reaction rate.
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Pump reactant molecules into the chamber.
-2. Adjust temperature and initial amounts to track product formation over time.
-"""
-
-    elif "solution" in text or "molarity" in text or "dilution" in text:
-        return """
-### 🧪 Solutions — Concentration, Molarity, Dilution
-
-**Key Theory Highlights:**
-* **Molarity ($M$):** Moles of solute per liter of solution.
-* **Dilution rule:** $M_1V_1 = M_2V_2$
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Add solute or solvent to change solution concentration.
-2. Use the concentration meter to measure molarity.
-"""
-
-    elif "ph" in text or "acid" in text or "base" in text or "indicator" in text:
-        return """
-### 🧪 Acids & Bases — pH and Indicators
-
-**Key Theory Highlights:**
-* $\\text{pH} = -\\log[H^+]$
-* Acidic solutions ($\\text{pH} < 7$), Basic solutions ($\\text{pH} > 7$).
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Use the dropper to add different liquids (coffee, soap, water) to the beaker.
-2. Dip the pH sensor to check exact acidic or basic nature.
-"""
-
-    elif "surface chemistry" in text or "adsorption" in text or "colloid" in text:
-        return """
-### ⚗️ Surface Chemistry — Adsorption / Colloids
-
-**Key Theory Highlights:**
-* **Adsorption:** Accumulation of molecular species at the surface rather than in the bulk.
-* Lyophilic and Lyophobic colloids show Tyndall effect.
-
----
-### 🔬 Interactive Simulation
-<a href="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Simulation</a>
-<div class="sim-container">
-    <iframe src="https://phet.colorado.edu/sims/html/states-of-matter-basics/latest/states-of-matter-basics_en.html"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Heat or cool atoms/molecules to observe phase changes.
-2. Analyze surface interactions and particle behavior.
-"""
-
-
-    # ================= MATHEMATICS =================
-    elif "derivative" in text or "application of derivatives" in text or "rate of change" in text:
-        return """
-### 📈 Application of Derivatives
-
-**Key Theory Highlights:**
-* Rate of change of quantities, increasing/decreasing functions, tangents and normals.
-* Finding local maxima and minima using first and second derivative tests.
-
----
-### 📐 Interactive Canvas
-<a href="https://www.geogebra.org/graphing?embed" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Calculator</a>
-<div class="sim-container">
-    <iframe src="https://www.geogebra.org/graphing?embed"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Type functions like `f(x) = x^3 - 3x` in the input bar.
-2. Find turning points and slopes directly on the graph.
-"""
-
-    elif "probability" in text or "bayes" in text or "conditional" in text:
-        return """
-### 🎲 Probability
-
-**Key Theory Highlights:**
-* Conditional probability: $P(A|B) = \\frac{P(A \\cap B)}{P(B)}$
-* Bayes' Theorem and Probability Distributions.
-
----
-### 📐 Interactive Canvas
-<a href="https://www.geogebra.org/scientific?embed" target="_blank" class="sim-btn">🔗 Click to Open Full Screen Tool</a>
-<div class="sim-container">
-    <iframe src="https://www.geogebra.org/scientific?embed"></iframe>
-</div>
-
-**Beginner Guide:**
-1. Use scientific tools for quick statistical calculations and permutations.
-"""
-
-
-    # --- FALLBACK / DEFAULT WELCOME SCREEN ---
-    else:
-        return f"""
-### 📘 ChitraVidya AI: **{query.title()}**
-
-Please type any of the exact topics listed on the home screen to view its theory notes and interactive simulation!
-"""
-
-# 4. Persistent Home Screen (Visible Always at the Top)
-st.markdown("""
-    <div class="title-container">
-        <img src="https://img.icons8.com/color/96/sparkling.png" class="logo-img">
-        <h1 class="main-title">Ask ChitraVidya AI</h1>
-    </div>
-""", unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Class 12th PCM Interactive Guide</p>', unsafe_allow_html=True)
-
-st.markdown("### 📚 Available Topics & How to Ask:")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.markdown("#### ⚡ Physics Topics")
-    st.markdown("""
-    <div class="topic-card">
-        <div class="topic-title">1. Electrostatics</div>
-        <div class="sample-q">💬 Ask: "Explain electrostatics and charges"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">2. Electric Circuits</div>
-        <div class="sample-q">💬 Ask: "Explain electric circuits and Ohm's law"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">3. Solenoid</div>
-        <div class="sample-q">💬 Ask: "Explain solenoid magnetic field"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">4. Magnetism</div>
-        <div class="sample-q">💬 Ask: "Explain magnetism and electromagnets"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">5. Electromagnetic Induction</div>
-        <div class="sample-q">💬 Ask: "Explain Faraday's law and EMI"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">6. Ray Optics</div>
-        <div class="sample-q">💬 Ask: "Explain lenses and mirrors in optics"</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col2:
-    st.markdown("#### 🧪 Chemistry Topics")
-    st.markdown("""
-    <div class="topic-card">
-        <div class="topic-title">7. Electrochemistry</div>
-        <div class="sample-q">💬 Ask: "Explain galvanic cells and electrochemistry"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">8. Chemical Kinetics</div>
-        <div class="sample-q">💬 Ask: "Explain chemical kinetics and reaction rate"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">9. Solutions</div>
-        <div class="sample-q">💬 Ask: "Explain solutions and molarity"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">10. Acids & Bases</div>
-        <div class="sample-q">💬 Ask: "Explain pH scale and acids bases"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">11. Surface Chemistry</div>
-        <div class="sample-q">💬 Ask: "Explain adsorption and surface chemistry"</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col3:
-    st.markdown("#### 📐 Mathematics Topics")
-    st.markdown("""
-    <div class="topic-card">
-        <div class="topic-title">12. Application of Derivatives</div>
-        <div class="sample-q">💬 Ask: "Explain application of derivatives"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">13. Probability</div>
-        <div class="sample-q">💬 Ask: "Explain probability and conditional probability"</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("---")
-
-# 5. Display Chat History Below Topics
-for i, msg in enumerate(st.session_state.messages):
-    with st.chat_message(msg["role"]):
-        # Add an anchor point at the start of new conversation turns for smooth auto-scrolling
-        if msg["role"] == "user":
-            st.markdown(f'<div id="msg-{i}"></div>', unsafe_allow_html=True)
-        st.markdown(msg["content"], unsafe_allow_html=True)
-
-# 6. Bottom Chat Input
-user_input = st.chat_input("Ask ChitraVidya AI (e.g. 'Explain solenoid')...")
-
-if user_input:
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    
-    # Generate structured response
-    response = get_pcm_response(user_input)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-    
-    # Auto-scroll injection targeting the newly added question block
-    new_index = len(st.session_state.messages) - 2
-    st.markdown(
-        f"""
-        <script>
-            const targetElement = window.parent.document.getElementById('msg-{new_index}');
-            if (targetElement) {{
-                targetElement.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-            }}
-        </script>
-        """,
-        unsafe_allow_html=True
+try:
+    renderer = PAGE_RENDERERS.get(st.session_state.current_page, render_home_page)
+    renderer()
+except Exception:
+    st.error(
+        "\\u26A0\\uFE0F Something unexpected went wrong loading this page. "
+        "Please try refreshing, or use the sidebar to go back to Home."
     )
-    
-    st.rerun()
+'''
+
+# ---------------------------------------------------------------------------
+# requirements.txt
+# ---------------------------------------------------------------------------
+FILES["requirements.txt"] = """streamlit>=1.38.0
+anthropic>=0.40.0
+"""
+
+# ---------------------------------------------------------------------------
+# .gitignore
+# ---------------------------------------------------------------------------
+FILES[".gitignore"] = """# Secrets -- never commit real API keys
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/logs/
+"""
+
+# ---------------------------------------------------------------------------
+# .streamlit/config.toml
+# ---------------------------------------------------------------------------
+FILES[".streamlit/config.toml"] = """[theme]
+primaryColor = "#5B5FEF"
+backgroundColor = "#F7F8FC"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1A1C29"
+font = "sans serif"
+
+[server]
+headless = true
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false
+"""
+
+# ---------------------------------------------------------------------------
+# .streamlit/secrets.toml.example
+# ---------------------------------------------------------------------------
+FILES[".streamlit/secrets.toml.example"] = """# Copy this file to .streamlit/secrets.toml (local dev) and NEVER commit the
+# real secrets.toml to GitHub. On Streamlit Community Cloud, paste the same
+# key/value into your app's "Secrets" settings panel instead of using a file.
+
+ANTHROPIC_API_KEY = "sk-ant-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"""
+
+# ---------------------------------------------------------------------------
+# data/physics.py
+# ---------------------------------------------------------------------------
+FILES["data/physics.py"] = '''"""
+CBSE Class 12 Physics syllabus data (2026-27 session).
+
+This structure mirrors the CBSE curriculum (verified against the CBSE
+2025-26 circular; CBSE has historically carried this structure forward
+unchanged, but you should cross-check against the official 2026-27
+circular at cbseacademic.nic.in before publishing to students, and update
+this file if CBSE issues any revision).
+
+Each chapter entry also lists a small set of "keywords" used purely as a
+lightweight, best-effort UI hint for subject/topic tagging. The actual
+understanding of a student's question is done by the AI model itself via
+the system prompt in services/ai_service.py -- this file is NOT used to
+restrict or hard-code what the AI can answer, only to power the syllabus
+browser UI and give the AI a grounded reference list so it never invents
+chapters that aren't on the syllabus.
+"""
+
+PHYSICS_SYLLABUS = {
+    "subject": "Physics",
+    "emoji": "\\u26A1",
+    "class_level": "CBSE Class 12",
+    "session": "2026-27",
+    "total_theory_marks": 70,
+    "total_practical_marks": 30,
+    "units": [
+        {
+            "unit_no": 1,
+            "unit_name": "Electrostatics",
+            "marks": 16,
+            "chapters": [
+                {
+                    "chapter_no": 1,
+                    "title": "Electric Charges and Fields",
+                    "keywords": ["charge", "coulomb's law", "electric field", "gauss's law",
+                                 "dipole", "flux", "field lines"],
+                },
+                {
+                    "chapter_no": 2,
+                    "title": "Electrostatic Potential and Capacitance",
+                    "keywords": ["potential", "capacitor", "capacitance", "dielectric",
+                                 "equipotential", "energy stored in capacitor"],
+                },
+            ],
+        },
+        {
+            "unit_no": 2,
+            "unit_name": "Current Electricity",
+            "marks": 17,
+            "chapters": [
+                {
+                    "chapter_no": 3,
+                    "title": "Current Electricity",
+                    "keywords": ["ohm's law", "resistivity", "emf", "internal resistance",
+                                 "wheatstone bridge", "potentiometer", "kirchhoff's laws",
+                                 "drift velocity"],
+                },
+            ],
+        },
+        {
+            "unit_no": 3,
+            "unit_name": "Magnetic Effects of Current and Magnetism",
+            "marks": 17,
+            "chapters": [
+                {
+                    "chapter_no": 4,
+                    "title": "Moving Charges and Magnetism",
+                    "keywords": ["biot-savart law", "ampere's law", "solenoid", "cyclotron",
+                                 "force on a moving charge", "magnetic field due to current"],
+                },
+                {
+                    "chapter_no": 5,
+                    "title": "Magnetism and Matter",
+                    "keywords": ["bar magnet", "earth's magnetism", "magnetic dipole",
+                                 "diamagnetic", "paramagnetic", "ferromagnetic"],
+                },
+            ],
+        },
+        {
+            "unit_no": 4,
+            "unit_name": "Electromagnetic Induction and Alternating Currents",
+            "marks": 18,
+            "chapters": [
+                {
+                    "chapter_no": 6,
+                    "title": "Electromagnetic Induction",
+                    "keywords": ["faraday's law", "lenz's law", "induced emf", "eddy currents",
+                                 "self inductance", "mutual inductance"],
+                },
+                {
+                    "chapter_no": 7,
+                    "title": "Alternating Current",
+                    "keywords": ["ac circuit", "lc oscillation", "resonance", "transformer",
+                                 "rms value", "impedance", "power factor"],
+                },
+            ],
+        },
+        {
+            "unit_no": 5,
+            "unit_name": "Electromagnetic Waves",
+            "marks": 18,
+            "chapters": [
+                {
+                    "chapter_no": 8,
+                    "title": "Electromagnetic Waves",
+                    "keywords": ["displacement current", "em spectrum", "properties of em waves"],
+                },
+                {
+                    "chapter_no": 9,
+                    "title": "Ray Optics and Optical Instruments",
+                    "keywords": ["reflection", "refraction", "lens formula", "mirror formula",
+                                 "total internal reflection", "prism", "microscope", "telescope"],
+                },
+                {
+                    "chapter_no": 10,
+                    "title": "Wave Optics",
+                    "keywords": ["huygens principle", "interference", "young's double slit",
+                                 "diffraction", "polarisation"],
+                },
+            ],
+        },
+        {
+            "unit_no": 6,
+            "unit_name": "Dual Nature of Radiation and Matter",
+            "marks": 12,
+            "chapters": [
+                {
+                    "chapter_no": 11,
+                    "title": "Dual Nature of Radiation and Matter",
+                    "keywords": ["photoelectric effect", "einstein's equation", "de broglie wavelength",
+                                 "work function", "matter waves"],
+                },
+            ],
+        },
+        {
+            "unit_no": 7,
+            "unit_name": "Atoms and Nuclei",
+            "marks": 12,
+            "chapters": [
+                {
+                    "chapter_no": 12,
+                    "title": "Atoms",
+                    "keywords": ["bohr model", "rutherford model", "hydrogen spectrum"],
+                },
+                {
+                    "chapter_no": 13,
+                    "title": "Nuclei",
+                    "keywords": ["radioactivity", "binding energy", "nuclear fission",
+                                 "nuclear fusion", "mass defect", "half life"],
+                },
+            ],
+        },
+        {
+            "unit_no": 8,
+            "unit_name": "Electronic Devices",
+            "marks": 7,
+            "chapters": [
+                {
+                    "chapter_no": 14,
+                    "title": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+                    "keywords": ["pn junction diode", "zener diode", "transistor", "rectifier",
+                                 "semiconductor", "logic gates"],
+                },
+            ],
+        },
+    ],
+}
+
+
+def all_chapter_titles():
+    """Flat list of every Class 12 Physics chapter title, in syllabus order."""
+    titles = []
+    for unit in PHYSICS_SYLLABUS["units"]:
+        for ch in unit["chapters"]:
+            titles.append(ch["title"])
+    return titles
+
+
+def flat_chapters():
+    """Flat list of chapter dicts, each tagged with its parent unit name/marks."""
+    flat = []
+    for unit in PHYSICS_SYLLABUS["units"]:
+        for ch in unit["chapters"]:
+            entry = dict(ch)
+            entry["unit_name"] = unit["unit_name"]
+            entry["unit_marks"] = unit["marks"]
+            flat.append(entry)
+    return flat
+'''
+
+# ---------------------------------------------------------------------------
+# data/chemistry.py
+# ---------------------------------------------------------------------------
+FILES["data/chemistry.py"] = '''"""
+CBSE Class 12 Chemistry syllabus data (2026-27 session).
+
+See the note at the top of data/physics.py -- same caveats apply: this
+mirrors the CBSE 2025-26 circular structure and should be cross-checked
+against the official 2026-27 circular before publishing.
+"""
+
+CHEMISTRY_SYLLABUS = {
+    "subject": "Chemistry",
+    "emoji": "\\U0001F9EA",
+    "class_level": "CBSE Class 12",
+    "session": "2026-27",
+    "total_theory_marks": 70,
+    "total_practical_marks": 30,
+    "units": [
+        {
+            "unit_no": 1,
+            "unit_name": "Solutions",
+            "marks": 7,
+            "chapters": [
+                {
+                    "chapter_no": 1,
+                    "title": "Solutions",
+                    "keywords": ["molarity", "molality", "raoult's law", "colligative properties",
+                                 "van't hoff factor", "osmotic pressure"],
+                },
+            ],
+        },
+        {
+            "unit_no": 2,
+            "unit_name": "Electrochemistry",
+            "marks": 9,
+            "chapters": [
+                {
+                    "chapter_no": 2,
+                    "title": "Electrochemistry",
+                    "keywords": ["nernst equation", "galvanic cell", "electrolysis", "emf of cell",
+                                 "conductivity", "kohlrausch's law", "fuel cell"],
+                },
+            ],
+        },
+        {
+            "unit_no": 3,
+            "unit_name": "Chemical Kinetics",
+            "marks": 7,
+            "chapters": [
+                {
+                    "chapter_no": 3,
+                    "title": "Chemical Kinetics",
+                    "keywords": ["rate of reaction", "order of reaction", "rate law",
+                                 "arrhenius equation", "activation energy", "half life"],
+                },
+            ],
+        },
+        {
+            "unit_no": 4,
+            "unit_name": "d- and f-Block Elements",
+            "marks": 7,
+            "chapters": [
+                {
+                    "chapter_no": 4,
+                    "title": "d- and f-Block Elements",
+                    "keywords": ["transition elements", "lanthanoids", "actinoids",
+                                 "variable oxidation states", "colour of transition metal ions"],
+                },
+            ],
+        },
+        {
+            "unit_no": 5,
+            "unit_name": "Coordination Compounds",
+            "marks": 7,
+            "chapters": [
+                {
+                    "chapter_no": 5,
+                    "title": "Coordination Compounds",
+                    "keywords": ["werner's theory", "ligand", "coordination number", "IUPAC naming",
+                                 "crystal field theory", "isomerism in coordination compounds"],
+                },
+            ],
+        },
+        {
+            "unit_no": 6,
+            "unit_name": "Haloalkanes and Haloarenes",
+            "marks": 6,
+            "chapters": [
+                {
+                    "chapter_no": 6,
+                    "title": "Haloalkanes and Haloarenes",
+                    "keywords": ["sn1", "sn2", "nucleophilic substitution", "grignard reagent",
+                                 "optical isomerism"],
+                },
+            ],
+        },
+        {
+            "unit_no": 7,
+            "unit_name": "Alcohols, Phenols and Ethers",
+            "marks": 6,
+            "chapters": [
+                {
+                    "chapter_no": 7,
+                    "title": "Alcohols, Phenols and Ethers",
+                    "keywords": ["lucas test", "williamson synthesis", "acidity of phenol",
+                                 "dehydration of alcohol"],
+                },
+            ],
+        },
+        {
+            "unit_no": 8,
+            "unit_name": "Aldehydes, Ketones and Carboxylic Acids",
+            "marks": 8,
+            "chapters": [
+                {
+                    "chapter_no": 8,
+                    "title": "Aldehydes, Ketones and Carboxylic Acids",
+                    "keywords": ["nucleophilic addition", "aldol condensation", "cannizzaro reaction",
+                                 "haloform reaction", "acidity of carboxylic acid"],
+                },
+            ],
+        },
+        {
+            "unit_no": 9,
+            "unit_name": "Amines",
+            "marks": 6,
+            "chapters": [
+                {
+                    "chapter_no": 9,
+                    "title": "Amines",
+                    "keywords": ["basicity of amines", "hofmann bromamide reaction",
+                                 "diazonium salts", "gabriel phthalimide synthesis"],
+                },
+            ],
+        },
+        {
+            "unit_no": 10,
+            "unit_name": "Biomolecules",
+            "marks": 7,
+            "chapters": [
+                {
+                    "chapter_no": 10,
+                    "title": "Biomolecules",
+                    "keywords": ["carbohydrates", "proteins", "enzymes", "vitamins",
+                                 "nucleic acids", "hormones"],
+                },
+            ],
+        },
+    ],
+}
+
+
+def all_chapter_titles():
+    titles = []
+    for unit in CHEMISTRY_SYLLABUS["units"]:
+        for ch in unit["chapters"]:
+            titles.append(ch["title"])
+    return titles
+
+
+def flat_chapters():
+    flat = []
+    for unit in CHEMISTRY_SYLLABUS["units"]:
+        for ch in unit["chapters"]:
+            entry = dict(ch)
+            entry["unit_name"] = unit["unit_name"]
+            entry["unit_marks"] = unit["marks"]
+            flat.append(entry)
+    return flat
+'''
+
+# ---------------------------------------------------------------------------
+# data/mathematics.py
+# ---------------------------------------------------------------------------
+FILES["data/mathematics.py"] = '''"""
+CBSE Class 12 Mathematics syllabus data (2026-27 session).
+
+See the note at the top of data/physics.py -- same caveats apply: this
+mirrors the CBSE 2025-26 circular structure and should be cross-checked
+against the official 2026-27 circular before publishing.
+"""
+
+MATHEMATICS_SYLLABUS = {
+    "subject": "Mathematics",
+    "emoji": "\\U0001F4D0",
+    "class_level": "CBSE Class 12",
+    "session": "2026-27",
+    "total_theory_marks": 80,
+    "total_internal_assessment_marks": 20,
+    "units": [
+        {
+            "unit_no": 1,
+            "unit_name": "Relations and Functions",
+            "chapters": [
+                {
+                    "chapter_no": 1,
+                    "title": "Relations and Functions",
+                    "keywords": ["reflexive", "symmetric", "transitive", "equivalence relation",
+                                 "one-one function", "onto function", "bijective"],
+                },
+                {
+                    "chapter_no": 2,
+                    "title": "Inverse Trigonometric Functions",
+                    "keywords": ["principal value", "arcsin", "arccos", "arctan",
+                                 "domain and range of inverse trig functions"],
+                },
+            ],
+        },
+        {
+            "unit_no": 2,
+            "unit_name": "Algebra",
+            "chapters": [
+                {
+                    "chapter_no": 3,
+                    "title": "Matrices",
+                    "keywords": ["matrix operations", "transpose", "symmetric matrix",
+                                 "invertible matrix", "elementary row operations"],
+                },
+                {
+                    "chapter_no": 4,
+                    "title": "Determinants",
+                    "keywords": ["cofactor", "adjoint", "inverse of a matrix", "cramer's rule",
+                                 "area of triangle using determinants"],
+                },
+            ],
+        },
+        {
+            "unit_no": 3,
+            "unit_name": "Calculus",
+            "chapters": [
+                {
+                    "chapter_no": 5,
+                    "title": "Continuity and Differentiability",
+                    "keywords": ["continuity", "differentiability", "chain rule",
+                                 "logarithmic differentiation", "second order derivative",
+                                 "mean value theorem"],
+                },
+                {
+                    "chapter_no": 6,
+                    "title": "Application of Derivatives",
+                    "keywords": ["increasing decreasing function", "maxima minima",
+                                 "rate of change", "tangent and normal", "approximation"],
+                },
+                {
+                    "chapter_no": 7,
+                    "title": "Integrals",
+                    "keywords": ["indefinite integral", "definite integral", "integration by parts",
+                                 "integration by substitution", "partial fractions"],
+                },
+                {
+                    "chapter_no": 8,
+                    "title": "Application of the Integrals",
+                    "keywords": ["area under curve", "area between two curves"],
+                },
+                {
+                    "chapter_no": 9,
+                    "title": "Differential Equations",
+                    "keywords": ["order and degree", "variable separable", "homogeneous differential equation",
+                                 "linear differential equation", "integrating factor"],
+                },
+            ],
+        },
+        {
+            "unit_no": 4,
+            "unit_name": "Vectors and Three-Dimensional Geometry",
+            "chapters": [
+                {
+                    "chapter_no": 10,
+                    "title": "Vectors",
+                    "keywords": ["dot product", "cross product", "scalar triple product",
+                                 "direction cosines", "unit vector"],
+                },
+                {
+                    "chapter_no": 11,
+                    "title": "Three-dimensional Geometry",
+                    "keywords": ["equation of a line in 3d", "equation of a plane",
+                                 "angle between two lines", "shortest distance between lines"],
+                },
+            ],
+        },
+        {
+            "unit_no": 5,
+            "unit_name": "Linear Programming",
+            "chapters": [
+                {
+                    "chapter_no": 12,
+                    "title": "Linear Programming",
+                    "keywords": ["feasible region", "objective function", "corner point method",
+                                 "optimal solution"],
+                },
+            ],
+        },
+        {
+            "unit_no": 6,
+            "unit_name": "Probability",
+            "chapters": [
+                {
+                    "chapter_no": 13,
+                    "title": "Probability",
+                    "keywords": ["conditional probability", "bayes' theorem", "random variable",
+                                 "probability distribution", "bernoulli trials", "binomial distribution"],
+                },
+            ],
+        },
+    ],
+}
+
+
+def all_chapter_titles():
+    titles = []
+    for unit in MATHEMATICS_SYLLABUS["units"]:
+        for ch in unit["chapters"]:
+            titles.append(ch["title"])
+    return titles
+
+
+def flat_chapters():
+    flat = []
+    for unit in MATHEMATICS_SYLLABUS["units"]:
+        for ch in unit["chapters"]:
+            entry = dict(ch)
+            entry["unit_name"] = unit["unit_name"]
+            flat.append(entry)
+    return flat
+'''
+
+# ---------------------------------------------------------------------------
+# services/syllabus_service.py
+# ---------------------------------------------------------------------------
+FILES["services/syllabus_service.py"] = '''"""
+services/syllabus_service.py
+
+A thin, unified access layer over data/physics.py, data/chemistry.py and
+data/mathematics.py. Nothing here calls any AI model -- this module only
+organizes syllabus-ground-truth data so:
+
+1. The "PCM Chapters" page in the UI can render it.
+2. ai_service.py can inject a compact, accurate chapter list into the
+   system prompt so the model always has real CBSE Class 12 PCM chapter
+   names to ground its answers in (and knows what is genuinely outside
+   the syllabus).
+3. A lightweight keyword-based subject guess can be made for the UI's
+   subject indicator badge, *before* the AI call returns (the AI's own
+   understanding of the question is the real subject-detection layer --
+   this is just a fast, best-effort visual hint).
+"""
+
+from data.physics import PHYSICS_SYLLABUS, flat_chapters as _physics_flat
+from data.chemistry import CHEMISTRY_SYLLABUS, flat_chapters as _chemistry_flat
+from data.mathematics import MATHEMATICS_SYLLABUS, flat_chapters as _maths_flat
+
+SUBJECTS = {
+    "Physics": PHYSICS_SYLLABUS,
+    "Chemistry": CHEMISTRY_SYLLABUS,
+    "Mathematics": MATHEMATICS_SYLLABUS,
+}
+
+SUBJECT_EMOJI = {
+    "Physics": "\\u26A1",
+    "Chemistry": "\\U0001F9EA",
+    "Mathematics": "\\U0001F4D0",
+}
+
+
+def get_syllabus(subject: str):
+    """Return the raw syllabus dict for a subject name ('Physics' etc.)."""
+    return SUBJECTS.get(subject)
+
+
+def get_all_flat_chapters():
+    """Return {subject_name: [chapter_dict, ...]} for all three subjects."""
+    return {
+        "Physics": _physics_flat(),
+        "Chemistry": _chemistry_flat(),
+        "Mathematics": _maths_flat(),
+    }
+
+
+def build_syllabus_reference_text():
+    """
+    Build a compact plain-text chapter reference (subject -> unit -> chapters)
+    for injection into the AI system prompt, so the model is grounded in the
+    real CBSE Class 12 PCM chapter list rather than guessing from memory.
+    """
+    lines = []
+    for subject_name, syllabus in SUBJECTS.items():
+        lines.append(f"\\n{syllabus['emoji']} {subject_name} ({syllabus['class_level']}, {syllabus['session']}):")
+        for unit in syllabus["units"]:
+            chapter_titles = ", ".join(ch["title"] for ch in unit["chapters"])
+            lines.append(f"  - Unit {unit['unit_no']} - {unit['unit_name']}: {chapter_titles}")
+    return "\\n".join(lines)
+
+
+_KEYWORD_INDEX = None
+
+
+def _build_keyword_index():
+    """Build a {keyword: subject_name} lookup once, lazily, from all chapter keywords."""
+    global _KEYWORD_INDEX
+    if _KEYWORD_INDEX is not None:
+        return _KEYWORD_INDEX
+
+    index = {}
+    for subject_name, flat_fn in (
+        ("Physics", _physics_flat),
+        ("Chemistry", _chemistry_flat),
+        ("Mathematics", _maths_flat),
+    ):
+        for ch in flat_fn():
+            for kw in ch.get("keywords", []):
+                index[kw.lower()] = subject_name
+            index[ch["title"].lower()] = subject_name
+    _KEYWORD_INDEX = index
+    return index
+
+
+def guess_subject(question: str):
+    """
+    Best-effort, fast keyword match used ONLY to pre-populate a UI badge
+    before the AI's real response arrives. Returns a subject name or None.
+    This is a hint, not the source of truth -- the AI response itself may
+    correct/override it and the UI should prefer whatever the AI actually
+    answered about.
+    """
+    if not question:
+        return None
+    q = question.lower()
+    index = _build_keyword_index()
+
+    for kw in sorted(index.keys(), key=len, reverse=True):
+        if kw in q:
+            return index[kw]
+
+    physics_hints = ["physics", "numerical", "circuit", "wave", "force", "voltage", "current"]
+    chemistry_hints = ["chemistry", "reaction", "compound", "acid", "bond", "organic", "equation balance"]
+    maths_hints = ["maths", "math", "integrate", "differentiate", "derivative", "matrix", "probability", "vector"]
+
+    for hint in physics_hints:
+        if hint in q:
+            return "Physics"
+    for hint in chemistry_hints:
+        if hint in q:
+            return "Chemistry"
+    for hint in maths_hints:
+        if hint in q:
+            return "Mathematics"
+
+    return None
+'''
+
+# ---------------------------------------------------------------------------
+# services/simulation_service.py
+# ---------------------------------------------------------------------------
+FILES["services/simulation_service.py"] = '''"""
+services/simulation_service.py
+
+A small, hand-curated map of CBSE Class 12 Physics topics to real PhET
+Interactive Simulations (https://phet.colorado.edu). This is intentionally
+a *whitelist*: the AI is instructed (see ai_service.py) to only ever
+reference a simulation that appears in this file, and to say plainly that
+no suitable simulation is available otherwise.
+
+IMPORTANT FOR MAINTAINERS: before shipping to real students, click through
+every URL below to confirm it still resolves on phet.colorado.edu -- PhET
+occasionally renames or retires simulations.
+"""
+
+SIMULATIONS = {
+    "Electric Charges and Fields": {
+        "title": "Charges and Fields",
+        "url": "https://phet.colorado.edu/en/simulations/charges-and-fields",
+        "try_this": [
+            "Place a positive and a negative charge on the grid.",
+            "Drag an E-field sensor around and watch the field vectors change.",
+            "Add more charges and see how the field lines rearrange.",
+        ],
+    },
+    "Electrostatic Potential and Capacitance": {
+        "title": "Capacitor Lab: Basics",
+        "url": "https://phet.colorado.edu/en/simulations/capacitor-
