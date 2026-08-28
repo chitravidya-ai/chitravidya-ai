@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for Clean UI & Full Iframe View
+# Custom CSS: Hide PhET logo/3-dots on right bottom & keep sound icon intact
 st.markdown("""
     <style>
     .title-container {
@@ -40,10 +40,10 @@ st.markdown("""
         margin-bottom: 1.5rem;
         font-weight: 500;
     }
-    /* Fixed container height to prevent iframe cropping */
+    /* Simulation Container with overlay to hide bottom-right PhET branding */
     .sim-container {
         position: relative;
-        height: 600px;
+        height: 550px;
         overflow: hidden;
         border-radius: 12px;
         border: 1px solid #374151;
@@ -54,6 +54,17 @@ st.markdown("""
         width: 100%;
         height: 100%;
         border: none;
+    }
+    /* Overlay box hiding PhET Logo & 3 Dots on bottom right corner */
+    .brand-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 150px;
+        height: 42px;
+        background-color: #0d1117;
+        z-index: 10;
+        pointer-events: auto;
     }
     .topic-card {
         background-color: #1E293B;
@@ -107,6 +118,7 @@ def render_pcm_response(title, notes_list, sim_url=None, guide_steps=None):
 <a href="{sim_url}" target="_blank" class="sim-btn">🔗 Open Full Screen Interactive Tool</a>
 <div class="sim-container">
     <iframe src="{sim_url}" allowfullscreen></iframe>
+    <div class="brand-overlay"></div>
 </div>
 
 **Beginner Guide:**
@@ -143,7 +155,7 @@ def get_pcm_response(query):
             ]
         )
 
-    # Solenoid (Separate Electromagnet Simulation)
+    # Solenoid
     elif "solenoid" in text:
         return render_pcm_response(
             "🌀 Solenoid & Its Magnetic Field",
@@ -157,8 +169,8 @@ def get_pcm_response(query):
             "https://phet.colorado.edu/sims/html/generator/latest/generator_en.html",
             [
                 "Select the Electromagnet / Solenoid tab in the simulation.",
-                "Adjust the current flow and number of loops on the coil.",
-                "Observe the magnetic field lines generated inside and around the solenoid."
+                "Adjust current flow and number of loops on the coil.",
+                "Observe magnetic field lines generated inside and around the solenoid."
             ]
         )
 
@@ -266,10 +278,10 @@ st.markdown("---")
 for i, msg in enumerate(st.session_state.messages):
     with st.chat_message(msg["role"]):
         if msg["role"] == "user":
-            st.markdown(f'<div id="msg-{i}"></div>', unsafe_allow_html=True)
+            st.markdown(f'<div id="target-latest-msg"></div>', unsafe_allow_html=True)
         st.markdown(msg["content"], unsafe_allow_html=True)
 
-# 6. Chat Input
+# 6. Chat Input & Auto-Scroll
 user_input = st.chat_input("Ask ChitraVidya AI (e.g. 'Explain solenoid')...")
 
 if user_input:
@@ -279,3 +291,16 @@ if user_input:
     st.session_state.messages.append({"role": "assistant", "content": response})
     
     st.rerun()
+
+# Execute Auto-Scroll to the newly searched response position
+st.markdown(
+    """
+    <script>
+        const targetElement = window.parent.document.getElementById('target-latest-msg');
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+    """,
+    unsafe_allow_html=True
+)
