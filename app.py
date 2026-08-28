@@ -8,9 +8,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS: Hide PhET branding, settings icon & 3-dots on right bottom
+# Custom CSS: Hide Streamlit Top-Right Menu/Header (Share, Star, GitHub, 3-dots) & PhET branding
 st.markdown("""
     <style>
+    /* Hide Streamlit Top Header Bar & Action Buttons */
+    header[data-testid="stHeader"] {
+        display: none !important;
+    }
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stAppHeader {display: none !important;}
+
     .title-container {
         display: flex;
         align-items: center;
@@ -249,7 +257,7 @@ def get_pcm_response(query):
             ]
         )
 
-    # New Chemistry Topic 1: pH Scale & Acid-Base Solutions
+    # Chemistry Topic 1: pH Scale & Acid-Base
     elif "ph" in text or "acid" in text or "base" in text or "equilibrium" in text:
         return render_pcm_response(
             "🧪 Acid-Base Equilibria & pH Scale",
@@ -268,7 +276,7 @@ def get_pcm_response(query):
             ]
         )
 
-    # New Chemistry Topic 2: Beer-Lambert Law & Absorbance
+    # Chemistry Topic 2: Beer-Lambert Law & Absorbance
     elif "beer" in text or "absorbance" in text or "spectroscopy" in text or "light absorption" in text:
         return render_pcm_response(
             "🔴 Beer-Lambert Law & Spectroscopy",
