@@ -173,7 +173,7 @@ def get_pcm_response(query):
             ]
         )
 
-    # EM Waves (New Topic Added)
+    # EM Waves
     elif "em wave" in text or "electromagnetic wave" in text or "emw" in text:
         return render_pcm_response(
             "🌊 Electromagnetic Waves (EM Waves)",
@@ -249,26 +249,45 @@ def get_pcm_response(query):
             ]
         )
 
-    # Electrochemistry (Fixed Exact Matching)
-    elif "electrochemistry" in text or "galvanic" in text or "cell" in text or "electrochemical" in text:
+    # New Chemistry Topic 1: pH Scale & Acid-Base Solutions
+    elif "ph" in text or "acid" in text or "base" in text or "equilibrium" in text:
         return render_pcm_response(
-            "🔋 Electrochemistry & Galvanic Cells",
+            "🧪 Acid-Base Equilibria & pH Scale",
             [
-                "**Galvanic Cell:** Converts chemical energy into electrical energy via spontaneous redox reactions.",
-                "**Anode vs Cathode:** Oxidation occurs at Anode (Negative electrode), Reduction occurs at Cathode (Positive electrode).",
-                "**Nernst Equation:** Calculates cell potential under non-standard conditions: $E_{cell} = E^0_{cell} - \\frac{RT}{nF} \\ln Q$.",
-                "**Kohlrausch's Law:** Limiting molar conductivity of an electrolyte is sum of individual ionic conductivities.",
-                "**Faraday's Law of Electrolysis:** Mass of substance deposited at an electrode is $m = Z I t$."
+                "**pH Definition:** Negative logarithm of hydrogen ion concentration: $\\text{pH} = -\\log_{10}[H^+]$.",
+                "**Water Auto-ionization:** $K_w = [H^+][OH^-] = 1.0 \\times 10^{-14}$ at $25^\\circ\\text{C}$.",
+                "**Strong vs Weak Acids:** Strong acids dissociate completely ($100\\%$), weak acids partially dissociate.",
+                "**Buffer Solutions:** Resists pH changes upon adding small amounts of acid or base.",
+                "**Equilibrium Constant ($K_a$):** Quantifies acid strength in aqueous solutions."
             ],
-            "https://phet.colorado.edu/sims/html/reactivity/latest/reactivity_en.html",
+            "https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html",
             [
-                "Dip different metal strips into chemical solutions.",
-                "Compare electron displacement reactivity series.",
-                "Observe ion formation across different metals."
+                "Select different liquids like Water, Acid, or Base.",
+                "Dip the pH probe into the liquid.",
+                "Add water or evaporate to see pH value changes."
             ]
         )
 
-    # Solutions (Fixed Exact Matching)
+    # New Chemistry Topic 2: Beer-Lambert Law & Absorbance
+    elif "beer" in text or "absorbance" in text or "spectroscopy" in text or "light absorption" in text:
+        return render_pcm_response(
+            "🔴 Beer-Lambert Law & Spectroscopy",
+            [
+                "**Beer-Lambert Law:** Absorbance ($A$) is proportional to concentration ($c$) and path length ($l$): $A = \\varepsilon c l$.",
+                "**Molar Absorptivity ($\\varepsilon$):** Property defining how strongly a chemical species absorbs light at a given wavelength.",
+                "**Transmittance ($T$):** Fraction of incident light transmitted through solution ($A = -\\log_{10} T$).",
+                "**Wavelength Selection:** Maximum absorbance occurs at specific characteristic wavelengths ($\\lambda_{max}$).",
+                "**Application:** Used to determine unknown solution concentrations in chemical analysis."
+            ],
+            "https://phet.colorado.edu/sims/html/beers-law-lab/latest/beers-law-lab_en.html",
+            [
+                "Select a chemical solution (e.g., Potassium Permanganate).",
+                "Adjust path length or solution concentration slider.",
+                "Turn on the light beam to measure absorbance."
+            ]
+        )
+
+    # Solutions
     elif "solution" in text or "molarity" in text or "concentration" in text or "dilution" in text:
         return render_pcm_response(
             "🧪 Solutions & Concentration Terms",
@@ -284,25 +303,6 @@ def get_pcm_response(query):
                 "Add solute powders or liquids into water container.",
                 "Dip the concentration probe to measure molarity value.",
                 "Evaporate water or add solvent to observe concentration shifts."
-            ]
-        )
-
-    # Chemical Kinetics
-    elif "kinetics" in text or "rate of reaction" in text:
-        return render_pcm_response(
-            "⏱️ Chemical Kinetics & Reaction Rates",
-            [
-                "**Rate of Reaction:** Change in concentration of reactants/products per unit time.",
-                "**Rate Law:** Mathematical equation relating rate to reactant concentrations ($Rate = k[A]^x[B]^y$).",
-                "**Half-Life ($t_{1/2}$):** Time taken for concentration to reduce to half (For 1st order: $t_{1/2} = \\frac{0.693}{k}$).",
-                "**Arrhenius Equation:** Describes temperature dependence: $k = A e^{-E_a / RT}$.",
-                "**Activation Energy ($E_a$):** Minimum energy required for reactants to form transition complex."
-            ],
-            "https://phet.colorado.edu/sims/html/reactions-and-rates/latest/reactions-and-rates_en.html",
-            [
-                "Pump reactant molecules into the reaction chamber.",
-                "Adjust temperature slider to view kinetic changes.",
-                "Observe collision energy barriers."
             ]
         )
 
@@ -384,12 +384,12 @@ with col2:
     st.markdown("#### 🧪 Chemistry Topics")
     st.markdown("""
     <div class="topic-card">
-        <div class="topic-title">7. Electrochemistry</div>
-        <div class="sample-q">💬 Ask: "Explain electrochemistry"</div>
+        <div class="topic-title">7. pH Scale & Acid-Base</div>
+        <div class="sample-q">💬 Ask: "Explain pH scale and acids"</div>
     </div>
     <div class="topic-card">
-        <div class="topic-title">8. Chemical Kinetics</div>
-        <div class="sample-q">💬 Ask: "Explain chemical kinetics"</div>
+        <div class="topic-title">8. Beer-Lambert Law</div>
+        <div class="sample-q">💬 Ask: "Explain Beer-Lambert law"</div>
     </div>
     <div class="topic-card">
         <div class="topic-title">9. Solutions</div>
