@@ -1,448 +1,392 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
-# 1. Page Configuration
-st.set_page_config(
-    page_title="ChitraVidya AI | Class 12 PCM",
-    page_icon="✨",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+st.set_page_config(page_title="Physics | Class 12", page_icon="⚡", layout="wide")
+st.title("⚡ Class 12 Physics – Interactive Simulations")
+st.caption("CBSE aligned • Free simulations • Source always shown")
+
+def show_sim(title, desc, url, source="PhET Interactive Simulations (University of Colorado)", height=620):
+    with st.expander(f"**{title}**", expanded=False):
+        st.markdown(f"**Source:** `{source}`")
+        st.write(desc)
+        st.markdown(f"[Open full screen ↗]({url})")
+        components.iframe(url, height=height, scrolling=True)
+
+# ---------------- Electrostatics & Current ----------------
+st.header("Unit I & II → Electrostatics + Current Electricity")
+
+show_sim(
+    "Charges and Fields",
+    "Electric field, equipotential lines, force on charges. Perfect for Electric Charges & Fields + Electrostatic Potential.",
+    "https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"
 )
 
-# Custom CSS: Hide Streamlit Top-Right Menu/Header (Share, Star, GitHub, 3-dots) & PhET branding
+show_sim(
+    "Capacitor Lab: Basics",
+    "Change plate area, separation and voltage. See charge, energy stored and electric field. Direct match for Capacitance.",
+    "https://phet.colorado.edu/sims/html/capacitor-lab-basics/latest/capacitor-lab-basics_en.html"
+)
+
+show_sim(
+    "Circuit Construction Kit: DC",
+    "Build real circuits with battery, resistors, bulbs, switches. Use voltmeter & ammeter. Best for Current Electricity.",
+    "https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"
+)
+
+show_sim(
+    "Ohm's Law",
+    "Visualise V = IR relationship interactively.",
+    "https://phet.colorado.edu/sims/html/ohms-law/latest/ohms-law_en.html"
+)
+
+# ---------------- Magnetism & EMI ----------------
+st.header("Unit III & IV → Magnetism + Electromagnetic Induction & AC")
+
+show_sim(
+    "Faraday's Law",
+    "Move a bar magnet through a coil and watch induced current. Classic EMI demonstration.",
+    "https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html"
+)
+
+show_sim(
+    "Faraday's Electromagnetic Lab",
+    "Advanced lab – generator, transformer, electromagnet, pickup coil etc.",
+    "https://phet.colorado.edu/sims/html/faradays-electromagnetic-lab/latest/faradays-electromagnetic-lab_en.html"
+)
+
+show_sim(
+    "Generator",
+    "See conversion of mechanical energy into electrical energy.",
+    "https://phet.colorado.edu/sims/html/generator/latest/generator_en.html"
+)
+
+# ---------------- Optics ----------------
+st.header("Unit VI → Optics")
+
+show_sim(
+    "Bending Light",
+    "Snell’s law, reflection, refraction, total internal reflection and prisms.",
+    "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_en.html"
+)
+
+show_sim(
+    "Geometric Optics",
+    "Ray diagrams for lenses and mirrors, image formation, magnification.",
+    "https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"
+)
+
+# ---------------- Dual Nature, Atoms, Nuclei ----------------
+st.header("Unit VII – IX → Dual Nature, Atoms & Nuclei, Semiconductors")
+
+show_sim(
+    "Photoelectric Effect",
+    "Intensity, frequency, stopping potential, work function – the classic experiment.",
+    "https://phet.colorado.edu/sims/html/photoelectric-effect/latest/photoelectric-effect_en.html"
+)
+
+show_sim(
+    "Build an Atom",
+    "Add protons, neutrons and electrons. Make ions and isotopes.",
+    "https://phet.colorado.edu/sims/html/build-an-atom/latest/build-an-atom_en.html"
+)
+
+show_sim(
+    "Alpha Decay",
+    "Watch radioactive decay and understand half-life visually.",
+    "https://phet.colorado.edu/sims/html/alpha-decay/latest/alpha-decay_en.html"
+)
+
+st.success("All simulations above are free and officially from PhET.")
+import streamlit as st
+import streamlit.components.v1 as components
+
+st.set_page_config(page_title="Physics | Class 12", page_icon="⚡", layout="wide")
+st.title("⚡ Class 12 Physics – Interactive Simulations")
+st.caption("CBSE aligned • Free simulations • Source always shown")
+
+def show_sim(title, desc, url, source="PhET Interactive Simulations (University of Colorado)", height=620):
+    with st.expander(f"**{title}**", expanded=False):
+        st.markdown(f"**Source:** `{source}`")
+        st.write(desc)
+        st.markdown(f"[Open full screen ↗]({url})")
+        components.iframe(url, height=height, scrolling=True)
+
+# ---------------- Electrostatics & Current ----------------
+st.header("Unit I & II → Electrostatics + Current Electricity")
+
+show_sim(
+    "Charges and Fields",
+    "Electric field, equipotential lines, force on charges. Perfect for Electric Charges & Fields + Electrostatic Potential.",
+    "https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html"
+)
+
+show_sim(
+    "Capacitor Lab: Basics",
+    "Change plate area, separation and voltage. See charge, energy stored and electric field. Direct match for Capacitance.",
+    "https://phet.colorado.edu/sims/html/capacitor-lab-basics/latest/capacitor-lab-basics_en.html"
+)
+
+show_sim(
+    "Circuit Construction Kit: DC",
+    "Build real circuits with battery, resistors, bulbs, switches. Use voltmeter & ammeter. Best for Current Electricity.",
+    "https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html"
+)
+
+show_sim(
+    "Ohm's Law",
+    "Visualise V = IR relationship interactively.",
+    "https://phet.colorado.edu/sims/html/ohms-law/latest/ohms-law_en.html"
+)
+
+# ---------------- Magnetism & EMI ----------------
+st.header("Unit III & IV → Magnetism + Electromagnetic Induction & AC")
+
+show_sim(
+    "Faraday's Law",
+    "Move a bar magnet through a coil and watch induced current. Classic EMI demonstration.",
+    "https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html"
+)
+
+show_sim(
+    "Faraday's Electromagnetic Lab",
+    "Advanced lab – generator, transformer, electromagnet, pickup coil etc.",
+    "https://phet.colorado.edu/sims/html/faradays-electromagnetic-lab/latest/faradays-electromagnetic-lab_en.html"
+)
+
+show_sim(
+    "Generator",
+    "See conversion of mechanical energy into electrical energy.",
+    "https://phet.colorado.edu/sims/html/generator/latest/generator_en.html"
+)
+
+# ---------------- Optics ----------------
+st.header("Unit VI → Optics")
+
+show_sim(
+    "Bending Light",
+    "Snell’s law, reflection, refraction, total internal reflection and prisms.",
+    "https://phet.colorado.edu/sims/html/bending-light/latest/bending-light_en.html"
+)
+
+show_sim(
+    "Geometric Optics",
+    "Ray diagrams for lenses and mirrors, image formation, magnification.",
+    "https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html"
+)
+
+# ---------------- Dual Nature, Atoms, Nuclei ----------------
+st.header("Unit VII – IX → Dual Nature, Atoms & Nuclei, Semiconductors")
+
+show_sim(
+    "Photoelectric Effect",
+    "Intensity, frequency, stopping potential, work function – the classic experiment.",
+    "https://phet.colorado.edu/sims/html/photoelectric-effect/latest/photoelectric-effect_en.html"
+)
+
+show_sim(
+    "Build an Atom",
+    "Add protons, neutrons and electrons. Make ions and isotopes.",
+    "https://phet.colorado.edu/sims/html/build-an-atom/latest/build-an-atom_en.html"
+)
+
+show_sim(
+    "Alpha Decay",
+    "Watch radioactive decay and understand half-life visually.",
+    "https://phet.colorado.edu/sims/html/alpha-decay/latest/alpha-decay_en.html"
+)
+
+st.success("All simulations above are free and officially from PhET.")
+import streamlit as st
+import streamlit.components.v1 as components
+
+st.set_page_config(page_title="Chemistry | Class 12", page_icon="🧪", layout="wide")
+st.title("🧪 Class 12 Chemistry – Interactive Simulations")
+st.caption("CBSE aligned • Free simulations • Source always shown")
+
+def show_sim(title, desc, url, source="PhET Interactive Simulations", height=620):
+    with st.expander(f"**{title}**", expanded=False):
+        st.markdown(f"**Source:** `{source}`")
+        st.write(desc)
+        st.markdown(f"[Open full screen ↗]({url})")
+        components.iframe(url, height=height, scrolling=True)
+
+st.header("Physical Chemistry")
+
+show_sim(
+    "Concentration",
+    "Change amount of solute and volume of solution. See molarity change in real time.",
+    "https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html"
+)
+
+show_sim(
+    "Acid-Base Solutions",
+    "Explore strong/weak acids and bases, pH, and particle view.",
+    "https://phet.colorado.edu/sims/html/acid-base-solutions/latest/acid-base-solutions_en.html"
+)
+
+show_sim(
+    "Gas Properties",
+    "Ideal gas law – change pressure, volume, temperature and number of particles.",
+    "https://phet.colorado.edu/sims/html/gas-properties/latest/gas-properties_en.html"
+)
+
+show_sim(
+    "States of Matter",
+    "Solid, liquid, gas – heat/cool particles and observe phase changes.",
+    "https://phet.colorado.edu/sims/html/states-of-matter/latest/states-of-matter_en.html"
+)
+
+st.header("Atomic Structure & Molecules")
+
+show_sim(
+    "Build a Molecule",
+    "Start from atoms and build molecules. Great for understanding molecular formulas.",
+    "https://phet.colorado.edu/sims/html/build-a-molecule/latest/build-a-molecule_en.html"
+)
+
+show_sim(
+    "Molecule Shapes",
+    "VSEPR theory – see 3D shapes of molecules based on electron pairs.",
+    "https://phet.colorado.edu/sims/html/molecule-shapes/latest/molecule-shapes_en.html"
+)
+
+show_sim(
+    "Build an Atom",
+    "Protons, neutrons, electrons → ions and isotopes.",
+    "https://phet.colorado.edu/sims/html/build-an-atom/latest/build-an-atom_en.html"
+)
+
+st.success("All simulations are free from PhET.")
+import streamlit as st
+import streamlit.components.v1 as components
+
+st.set_page_config(page_title="Mathematics | Class 12", page_icon="📐", layout="wide")
+st.title("📐 Class 12 Mathematics – Interactive Simulations")
+st.caption("CBSE aligned • Free tools • Source always shown")
+
+def show_sim(title, desc, url, source="PhET Interactive Simulations", height=620):
+    with st.expander(f"**{title}**", expanded=False):
+        st.markdown(f"**Source:** `{source}`")
+        st.write(desc)
+        st.markdown(f"[Open full screen ↗]({url})")
+        components.iframe(url, height=height, scrolling=True)
+
+st.header("Functions, Graphs & Calculus")
+
+show_sim(
+    "Graphing Lines",
+    "Slope-intercept form, point-slope form – explore linear equations visually.",
+    "https://phet.colorado.edu/sims/html/graphing-lines/latest/graphing-lines_en.html"
+)
+
+show_sim(
+    "Graphing Quadratics",
+    "See how coefficients a, b, c affect the parabola.",
+    "https://phet.colorado.edu/sims/html/graphing-quadratics/latest/graphing-quadratics_en.html"
+)
+
+show_sim(
+    "Calculus Grapher",
+    "Visualise derivatives and integrals interactively.",
+    "https://phet.colorado.edu/sims/html/calculus-grapher/latest/calculus-grapher_en.html"
+)
+
+st.header("Vectors & 3D Geometry")
+
+show_sim(
+    "Vector Addition",
+    "Add vectors graphically and see resultant.",
+    "https://phet.colorado.edu/sims/html/vector-addition/latest/vector-addition_en.html"
+)
+
+st.info("For advanced 3D geometry and matrices you can also use free tools like GeoGebra (geogebra.org) and Desmos (desmos.com).")
+import streamlit as st
+import streamlit.components.v1 as components
+
+st.set_page_config(page_title="Biology | Class 12", page_icon="🧬", layout="wide")
+st.title("🧬 Class 12 Biology – Interactive Simulations")
+st.caption("CBSE aligned • Free simulations • Source always shown")
+
+def show_sim(title, desc, url, source, height=620):
+    with st.expander(f"**{title}**", expanded=False):
+        st.markdown(f"**Source:** `{source}`")
+        st.write(desc)
+        st.markdown(f"[Open full screen ↗]({url})")
+        components.iframe(url, height=height, scrolling=True)
+
+st.header("Genetics & Evolution")
+
+show_sim(
+    "Gene Expression Essentials",
+    "Transcription and translation – see how DNA becomes protein.",
+    "https://phet.colorado.edu/sims/html/gene-expression-essentials/latest/gene-expression-essentials_en.html",
+    "PhET Interactive Simulations"
+)
+
+show_sim(
+    "Natural Selection",
+    "Watch evolution happen through natural selection in a population.",
+    "https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_en.html",
+    "PhET Interactive Simulations"
+)
+
+st.header("Other Useful Free Tools")
+
 st.markdown("""
-    <style>
-    /* Hide Streamlit Top Header Bar & Action Buttons */
-    header[data-testid="stHeader"] {
-        display: none !important;
-    }
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    .stAppHeader {display: none !important;}
+- **Classical Genetics Simulator** (Fruit fly crosses) → [cgslab.com](https://cgslab.com)  
+  **Source:** Classical Genetics Simulator
+- **HHMI BioInteractive** (excellent free interactives) → [biointeractive.org](https://www.biointeractive.org)
+""")
 
-    .title-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        margin-top: 1vh;
-        margin-bottom: 0px;
-    }
-    .logo-img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-    .main-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        background: linear-gradient(45deg, #4F46E5, #06B6D4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0;
-    }
-    .sub-title {
-        text-align: center;
-        font-size: 1.1rem;
-        color: #9CA3AF;
-        margin-bottom: 1.5rem;
-        font-weight: 500;
-    }
-    .sim-container {
-        position: relative;
-        height: 550px;
-        overflow: hidden;
-        border-radius: 12px;
-        border: 1px solid #374151;
-        background: #0f172a;
-        margin-bottom: 10px;
-    }
-    .sim-container iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-    /* Extended Overlay box hiding PhET Logo, Settings Gear & 3 Dots */
-    .brand-overlay {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 180px;
-        height: 50px;
-        background-color: #0d1117;
-        z-index: 10;
-        pointer-events: auto;
-    }
-    .topic-card {
-        background-color: #1E293B;
-        border: 1px solid #334155;
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-    }
-    .topic-title {
-        color: #38BDF8;
-        font-weight: 700;
-        font-size: 1.05rem;
-        margin-bottom: 3px;
-    }
-    .sample-q {
-        color: #CBD5E1;
-        font-size: 0.9rem;
-        font-style: italic;
-    }
-    .sim-btn {
-        display: inline-block;
-        background-color: #2563EB;
-        color: white !important;
-        padding: 8px 16px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 10px;
-    }
-    .sim-btn:hover {
-        background-color: #1D4ED8;
-    }
-    </style>
-""", unsafe_allow_html=True)
+st.success("PhET simulations + other free high-quality biology tools.")
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# 2. State Initialization
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+st.set_page_config(page_title="IP | Class 12", page_icon="💻", layout="wide")
+st.title("💻 Class 12 Informatics Practices")
+st.caption("Live demos + free tools • Source always shown")
 
-# Helper Function
-def render_pcm_response(title, notes_list, sim_url=None, guide_steps=None):
-    notes_formatted = "\n".join([f"* {point}" for point in notes_list])
-    
-    sim_html = ""
-    if sim_url and guide_steps:
-        guide_formatted = "\n".join([f"{i+1}. {step}" for i, step in enumerate(guide_steps)])
-        sim_html = f"""
----
-### 🔬 Interactive Visual Simulation
-<a href="{sim_url}" target="_blank" class="sim-btn">🔗 Open Full Screen Interactive Tool</a>
-<div class="sim-container">
-    <iframe src="{sim_url}" allowfullscreen></iframe>
-    <div class="brand-overlay"></div>
-</div>
+st.header("1. Data Handling using Pandas (Live Demo)")
 
-**Beginner Guide:**
-{guide_formatted}
-"""
-    return f"""
-### {title}
+# Sample data
+data = {
+    "Name": ["Aman", "Riya", "Kabir", "Sneha", "Vikram"],
+    "Marks": [85, 92, 78, 88, 95],
+    "City": ["Delhi", "Mumbai", "Delhi", "Bangalore", "Mumbai"]
+}
+df = pd.DataFrame(data)
 
-**Key Theory Highlights (Class 12th NCERT):**
-{notes_formatted}
-{sim_html}
-"""
+st.write("Sample DataFrame:")
+st.dataframe(df, use_container_width=True)
 
-# 3. Router Engine
-def get_pcm_response(query):
-    text = query.lower()
-
-    # Electrostatics
-    if "electrostatic" in text or "charge" in text or "electric field" in text:
-        return render_pcm_response(
-            "⚡ Electrostatics — Charges & Electric Field",
-            [
-                "**Coulomb's Law:** Force between two point charges is $F = \\frac{k \\cdot |q_1 q_2|}{r^2}$.",
-                "**Electric Field ($E$):** Force per unit positive test charge ($E = \\frac{F}{q}$).",
-                "**Electric Dipole Moment ($p$):** Directed from negative to positive charge ($p = q \\times 2a$).",
-                "**Gauss's Law:** Total electric flux through a closed surface is $\\frac{Q_{encl}}{\\varepsilon_0}$.",
-                "**Equipotential Surfaces:** Surfaces having same potential at every point."
-            ],
-            "https://phet.colorado.edu/sims/html/charges-and-fields/latest/charges-and-fields_en.html",
-            [
-                "Drag positive or negative charges into the field.",
-                "Toggle 'Electric Field' and 'Equipotential' check-boxes.",
-                "Place sensors at different distances to measure field strength."
-            ]
-        )
-
-    # Solenoid
-    elif "solenoid" in text:
-        return render_pcm_response(
-            "🌀 Solenoid & Its Magnetic Field",
-            [
-                "**Definition:** A long cylindrical coil of insulated copper wire wound in the shape of a helix.",
-                "**Internal Field:** Field lines inside are uniform and parallel ($B = \\mu_0 n I$).",
-                "**Number Density ($n$):** Represents total turns per unit length ($n = \\frac{N}{L}$).",
-                "**External Field:** Magnetic field outside a long solenoid is nearly zero.",
-                "**Electromagnet Core:** Soft iron core enhances magnetic field due to high permeability."
-            ],
-            "https://phet.colorado.edu/sims/html/generator/latest/generator_en.html",
-            [
-                "Select the Electromagnet / Solenoid tab in the simulation.",
-                "Adjust current flow and number of loops on the coil.",
-                "Observe magnetic field lines generated inside and around the solenoid."
-            ]
-        )
-
-    # EM Waves
-    elif "em wave" in text or "electromagnetic wave" in text or "emw" in text:
-        return render_pcm_response(
-            "🌊 Electromagnetic Waves (EM Waves)",
-            [
-                "**Nature of EM Waves:** Transverse non-mechanical waves produced by accelerating electric charges.",
-                "**Perpendicular Oscillations:** Electric vector ($E$) and Magnetic vector ($B$) oscillate perpendicular to each other and to propagation direction ($c = \\frac{E_0}{B_0}$).",
-                "**Speed of Light:** Speed in vacuum is given by $c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}} \\approx 3 \\times 10^8 \\text{ m/s}$.",
-                "**Displacement Current ($I_d$):** Current due to changing electric flux: $I_d = \\varepsilon_0 \\frac{d\\Phi_E}{dt}$.",
-                "**Electromagnetic Spectrum:** Radio waves $\\rightarrow$ Microwaves $\\rightarrow$ Infrared $\\rightarrow$ Visible $\\rightarrow$ UV $\\rightarrow$ X-rays $\\rightarrow$ Gamma rays."
-            ],
-            "https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_en.html",
-            [
-                "Select the Light tab in the simulation.",
-                "Adjust frequency and amplitude sliders.",
-                "Observe transverse wave oscillations and wave fronts."
-            ]
-        )
-
-    # Faraday's Law / EMI
-    elif "induction" in text or "faraday" in text or "emi" in text or "generator" in text:
-        return render_pcm_response(
-            "⚡ Electromagnetic Induction & Faraday's Laws",
-            [
-                "**Magnetic Flux ($\\Phi_B$):** Measure of field lines passing through an area ($\\Phi_B = B A \\cos\\theta$).",
-                "**Faraday's 1st Law:** Changing magnetic flux induces an electromotive force (EMF).",
-                "**Faraday's 2nd Law:** Magnitude of induced EMF is $\\mathcal{E} = -\\frac{d\\Phi_B}{dt}$.",
-                "**Lenz's Law:** Induced current opposes the change in magnetic flux that produced it.",
-                "**Eddy Currents:** Circulating currents induced in bulk conductors due to changing flux."
-            ],
-            "https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_en.html",
-            [
-                "Move the bar magnet through the coil loop.",
-                "Observe direction of current flow indicated by the voltmeter.",
-                "Observe bulb light intensity relative to magnet speed."
-            ]
-        )
-
-    # Circuits
-    elif "circuit" in text or "ohm" in text or "resistance" in text or "current" in text:
-        return render_pcm_response(
-            "🔌 Current Electricity & Circuits",
-            [
-                "**Ohm's Law:** Voltage is directly proportional to current ($V = IR$).",
-                "**Drift Velocity ($v_d$):** Average velocity acquired by electrons ($I = n e A v_d$).",
-                "**Resistivity ($\\rho$):** Material property defining resistance ($R = \\rho \\frac{L}{A}$).",
-                "**Kirchhoff's Current Law:** Total current entering a junction equals current leaving.",
-                "**Kirchhoff's Voltage Law:** Algebraic sum of potential changes in a loop is zero."
-            ],
-            "https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_en.html",
-            [
-                "Drag wires, battery, and resistors onto screen.",
-                "Connect components in a closed circuit loop.",
-                "Use voltmeter and ammeter tools to test Ohm's Law."
-            ]
-        )
-
-    # Ray Optics
-    elif "lens" in text or "mirror" in text or "optics" in text or "ray" in text:
-        return render_pcm_response(
-            "🔍 Ray Optics — Lenses & Refraction",
-            [
-                "**Snell's Law:** $n_1 \\sin i = n_2 \\sin r$.",
-                "**Lens Formula:** $\\frac{1}{f} = \\frac{1}{v} - \\frac{1}{u}$.",
-                "**Lens Maker's Formula:** $\\frac{1}{f} = (n-1) \\left(\\frac{1}{R_1} - \\frac{1}{R_2}\\right)$.",
-                "**Power of Lens ($P$):** Reciprocal of focal length in meters ($P = \\frac{1}{f}$).",
-                "**Total Internal Reflection:** Occurs when light travels from denser to rarer medium at $i > i_c$."
-            ],
-            "https://phet.colorado.edu/sims/html/geometric-optics/latest/geometric-optics_en.html",
-            [
-                "Select Convex or Concave lens setup.",
-                "Change focal length slider and drag object position.",
-                "Trace principal light rays to observe image formation."
-            ]
-        )
-
-    # Chemistry Topic 1: pH Scale & Acid-Base
-    elif "ph" in text or "acid" in text or "base" in text or "equilibrium" in text:
-        return render_pcm_response(
-            "🧪 Acid-Base Equilibria & pH Scale",
-            [
-                "**pH Definition:** Negative logarithm of hydrogen ion concentration: $\\text{pH} = -\\log_{10}[H^+]$.",
-                "**Water Auto-ionization:** $K_w = [H^+][OH^-] = 1.0 \\times 10^{-14}$ at $25^\\circ\\text{C}$.",
-                "**Strong vs Weak Acids:** Strong acids dissociate completely ($100\\%$), weak acids partially dissociate.",
-                "**Buffer Solutions:** Resists pH changes upon adding small amounts of acid or base.",
-                "**Equilibrium Constant ($K_a$):** Quantifies acid strength in aqueous solutions."
-            ],
-            "https://phet.colorado.edu/sims/html/ph-scale/latest/ph-scale_en.html",
-            [
-                "Select different liquids like Water, Acid, or Base.",
-                "Dip the pH probe into the liquid.",
-                "Add water or evaporate to see pH value changes."
-            ]
-        )
-
-    # Chemistry Topic 2: Beer-Lambert Law & Absorbance
-    elif "beer" in text or "absorbance" in text or "spectroscopy" in text or "light absorption" in text:
-        return render_pcm_response(
-            "🔴 Beer-Lambert Law & Spectroscopy",
-            [
-                "**Beer-Lambert Law:** Absorbance ($A$) is proportional to concentration ($c$) and path length ($l$): $A = \\varepsilon c l$.",
-                "**Molar Absorptivity ($\\varepsilon$):** Property defining how strongly a chemical species absorbs light at a given wavelength.",
-                "**Transmittance ($T$):** Fraction of incident light transmitted through solution ($A = -\\log_{10} T$).",
-                "**Wavelength Selection:** Maximum absorbance occurs at specific characteristic wavelengths ($\\lambda_{max}$).",
-                "**Application:** Used to determine unknown solution concentrations in chemical analysis."
-            ],
-            "https://phet.colorado.edu/sims/html/beers-law-lab/latest/beers-law-lab_en.html",
-            [
-                "Select a chemical solution (e.g., Potassium Permanganate).",
-                "Adjust path length or solution concentration slider.",
-                "Turn on the light beam to measure absorbance."
-            ]
-        )
-
-    # Solutions
-    elif "solution" in text or "molarity" in text or "concentration" in text or "dilution" in text:
-        return render_pcm_response(
-            "🧪 Solutions & Concentration Terms",
-            [
-                "**Molarity ($M$):** Moles of solute per liter of solution ($M = \\frac{n_{solute}}{V(L)}$).",
-                "**Molality ($m$):** Moles of solute per kg of solvent ($m = \\frac{n_{solute}}{W_{solvent}(kg)}$).",
-                "**Raoult's Law:** Partial vapor pressure of solvent is proportional to its mole fraction ($p_1 = x_1 p_1^0$).",
-                "**Colligative Properties:** Properties depending on number of solute particles (e.g., Osmotic Pressure $\\Pi = CRT$).",
-                "**Van 't Hoff Factor ($i$):** Accounts for association or dissociation of solute particles ($i = \\frac{\\text{Observed Property}}{\\text{Theoretical Property}}$)."
-            ],
-            "https://phet.colorado.edu/sims/html/concentration/latest/concentration_en.html",
-            [
-                "Add solute powders or liquids into water container.",
-                "Dip the concentration probe to measure molarity value.",
-                "Evaporate water or add solvent to observe concentration shifts."
-            ]
-        )
-
-    # Application of Derivatives
-    elif "derivative" in text or "calculus" in text:
-        return render_pcm_response(
-            "📈 Application of Derivatives",
-            [
-                "**Rate of Change:** Derivative $\\frac{dy}{dx}$ represents instantaneous rate of change.",
-                "**Tangents & Normals:** Slope of tangent to curve $y=f(x)$ is $m = \\frac{dy}{dx}$.",
-                "**Increasing/Decreasing Functions:** $f(x)$ is strictly increasing if $f'(x) > 0$.",
-                "**First Derivative Test:** Critical point $x=c$ is local maxima if $f'(x)$ changes sign from positive to negative.",
-                "**Second Derivative Test:** If $f'(c) = 0$ and $f''(c) < 0$, point $c$ is local maximum."
-            ],
-            "https://www.geogebra.org/graphing?embed",
-            [
-                "Type function equation like `f(x) = x^3 - 3*x` in input box.",
-                "Type `Derivative(f)` to graph slope behavior.",
-                "Locate turning points and critical values directly."
-            ]
-        )
-
-    # Default Theory
-    else:
-        return render_pcm_response(
-            f"📘 Concept Notes: **{query.title()}**",
-            [
-                "**NCERT Foundation:** Core Class 12th Board concepts and formulas.",
-                "**Definition & Scope:** Covers basic principles, unit dimensions, and key derivations.",
-                "**Key Formula:** Standard algebraic and differential textbook equations.",
-                "**Applications:** Relevant for Board exams and competitive preparation.",
-                "**Exam Tip:** Practice step-by-step numerical problems and derivations."
-            ]
-        )
-
-# 4. Persistent Home Screen with Topics List and Sample Questions
-st.markdown("""
-    <div class="title-container">
-        <img src="https://img.icons8.com/color/96/sparkling.png" class="logo-img">
-        <h1 class="main-title">Ask ChitraVidya AI</h1>
-    </div>
-""", unsafe_allow_html=True)
-st.markdown('<p class="sub-title">Class 12th PCM Interactive Guide</p>', unsafe_allow_html=True)
-
-st.markdown("### 📚 Available Topics & How to Ask:")
-
-col1, col2, col3 = st.columns(3)
-
+st.write("Basic operations:")
+col1, col2 = st.columns(2)
 with col1:
-    st.markdown("#### ⚡ Physics Topics")
-    st.markdown("""
-    <div class="topic-card">
-        <div class="topic-title">1. Electrostatics</div>
-        <div class="sample-q">💬 Ask: "Explain electrostatics"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">2. Electric Circuits</div>
-        <div class="sample-q">💬 Ask: "Explain electric circuits"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">3. Solenoid</div>
-        <div class="sample-q">💬 Ask: "Explain solenoid"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">4. Electromagnetic Induction</div>
-        <div class="sample-q">💬 Ask: "Explain Faraday's law"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">5. EM Waves</div>
-        <div class="sample-q">💬 Ask: "Explain EM waves"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">6. Ray Optics</div>
-        <div class="sample-q">💬 Ask: "Explain optics and lenses"</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
+    st.write("Head of data:")
+    st.write(df.head(3))
 with col2:
-    st.markdown("#### 🧪 Chemistry Topics")
-    st.markdown("""
-    <div class="topic-card">
-        <div class="topic-title">7. pH Scale & Acid-Base</div>
-        <div class="sample-q">💬 Ask: "Explain pH scale and acids"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">8. Beer-Lambert Law</div>
-        <div class="sample-q">💬 Ask: "Explain Beer-Lambert law"</div>
-    </div>
-    <div class="topic-card">
-        <div class="topic-title">9. Solutions</div>
-        <div class="sample-q">💬 Ask: "Explain solutions and molarity"</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col3:
-    st.markdown("#### 📐 Mathematics Topics")
-    st.markdown("""
-    <div class="topic-card">
-        <div class="topic-title">10. Application of Derivatives</div>
-        <div class="sample-q">💬 Ask: "Explain derivatives"</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.write("Describe:")
+    st.write(df.describe())
 
-st.markdown("---")
+st.header("2. Data Visualization (Matplotlib)")
 
-# 5. Display Chat History
-for i, msg in enumerate(st.session_state.messages):
-    with st.chat_message(msg["role"]):
-        if msg["role"] == "user":
-            st.markdown(f'<div id="target-latest-msg"></div>', unsafe_allow_html=True)
-        st.markdown(msg["content"], unsafe_allow_html=True)
+fig, ax = plt.subplots()
+ax.bar(df["Name"], df["Marks"], color="#3b82f6")
+ax.set_ylabel("Marks")
+ax.set_title("Student Marks")
+st.pyplot(fig)
 
-# 6. Chat Input & Auto-Scroll
-user_input = st.chat_input("Ask ChitraVidya AI (e.g. 'Explain solenoid')...")
+st.header("3. Useful Free Tools for IP")
 
-if user_input:
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    
-    response = get_pcm_response(user_input)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-    
-    st.rerun()
+st.markdown("""
+| Topic | Free Tool | Source |
+|-------|-----------|--------|
+| SQL Practice | [SQLBolt](https://sqlbolt.com) / [DB Fiddle](https://www.db-fiddle.com) | SQLBolt / DB Fiddle |
+| Pandas Practice | This page itself + [Kaggle](https://www.kaggle.com) | Live demo |
+| Computer Networks | [Cisco Packet Tracer](https://www.netacad.com) (free student version) | Cisco |
+| Societal Impacts | Read CBSE textbook + [Internet Society](https://www.internetsociety.org) resources | Open resources |
+""")
 
-# Auto-Scroll Script Execution
-st.markdown(
-    """
-    <script>
-        const targetElement = window.parent.document.getElementById('target-latest-msg');
-        if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    </script>
-    """,
-    unsafe_allow_html=True
-)
+st.success("All tools recommended above are free for students.")
